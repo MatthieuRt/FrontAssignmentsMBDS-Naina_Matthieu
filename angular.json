@@ -26,9 +26,10 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/dist/css/app.css"
             ],
-            "scripts": []
+            "scripts": ["src/assets/dist/js/app.js"]
           },
           "configurations": {
             "production": {
