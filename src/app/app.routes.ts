@@ -7,6 +7,7 @@ import { authGuard } from './shared/auth.guard';
 import { TemplateComponent } from './template/template/template.component';
 import { ToolbarComponent } from './template/toolbar/toolbar.component';
 import { ContainerComponent } from './template/container/container.component';
+import { ListAssignmentsComponent } from './assignments/list-assignments/list-assignments.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,9 @@ export const routes: Routes = [
       [
         {
           path: 'home', component: AssignmentsComponent
+        },
+        {
+          path: 'list', component: ListAssignmentsComponent
         }
       ]
   },
