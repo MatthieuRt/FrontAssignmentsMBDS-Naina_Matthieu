@@ -8,8 +8,12 @@ import { TemplateComponent } from './template/template/template.component';
 import { ToolbarComponent } from './template/toolbar/toolbar.component';
 import { ContainerComponent } from './template/container/container.component';
 import { ListAssignmentsComponent } from './assignments/list-assignments/list-assignments.component';
+import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
+  {
+    path: 'login', component: LoginComponent
+  },
   {
     path: '', component: TemplateComponent, children:
       [
