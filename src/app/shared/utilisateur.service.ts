@@ -1,22 +1,56 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError} from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { Matiere } from '../assignments/matiere.model';
 @Injectable({
   providedIn: 'root'
 })
 export class UtilisateurService {
   uri = "http://localhost:8010/api/users";
+  private _user: BehaviorSubject<any | null> = new BehaviorSubject(null);
+  private _matiere: BehaviorSubject<Matiere | null> = new BehaviorSubject<Matiere | null>(null);
+  constructor(private http: HttpClient) { }
 
-  constructor(private http:HttpClient) { }
-
-  getUser(id:string):Observable<any|undefined> {
-    return this.http.get<any>(this.uri + "/" + id)
-    .pipe(
-           catchError(this.handleError<any>('### catchError: getUtilisateur by id avec id=' + id))
-    );
-   
+  get user$(): Observable<any[]> {
+    return this._user.asObservable();
   }
+  getUser(id: string | null): Observable<any | undefined> {
+    return this.http.get<any>(this.uri + "/" + id)
+      .pipe(
+        catchError(this.handleError<any>('### catchError: getUtilisateur by id avec id=' + id))
+      );
+
+  }
+  getUserById(id: string): Observable<any> {
+    const url = this.uri + "/" + id
+    return this.http.get<any>(url).pipe(
+      take(1),
+      map((reponse) => {
+        this._user.next(reponse);
+        return reponse;
+      }),
+      switchMap((user) => {
+
+        if (!user) {
+          return throwError('Pas d\' utilisateur avec l\'id => ' + id + '!');
+        }
+
+        return of(user);
+      })
+    );
+  }
+  getMatiere(id: string|null): Observable<Matiere | null> {
+    return this._user.pipe(
+      take(1),
+      map(user => {
+        const matiere = user.matieres.find((mat: Matiere) => mat.id === Number(id)) || null;
+        this._matiere.next(matiere);
+        return matiere;
+      })
+    );
+  }
+
 
   private handleError<T>(operation: any, result?: T) {
     return (error: any): Observable<T> => {
@@ -25,5 +59,5 @@ export class UtilisateurService {
 
       return of(result as T);
     }
- };
+  };
 }
