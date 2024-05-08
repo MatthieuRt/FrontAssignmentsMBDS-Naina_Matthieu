@@ -24,15 +24,21 @@ export const routes: Routes = [
           path: 'home', component: AssignmentsComponent
         },
         {
-          path: 'list', component: ListAssignmentsComponent, children: [
+          path: 'test/:id', component: DetailMatiereComponent,
+          resolve: {
+            matiere: MatiereResolver
+          }
+        },
+        {
+          path: 'list', component: ListAssignmentsComponent,
+          children: [
             {
               path: ':id',
               component: DetailMatiereComponent,
               resolve: {
                 matiere: MatiereResolver
               }
-            },
-
+            }
           ]
         }
       ]

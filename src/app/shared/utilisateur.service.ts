@@ -23,6 +23,7 @@ export class UtilisateurService {
 
   }
   getUserById(id: string): Observable<any> {
+    console.log("efa natsoina");
     const url = this.uri + "/" + id
     return this.http.get<any>(url).pipe(
       take(1),
