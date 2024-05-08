@@ -9,6 +9,9 @@ import { ToolbarComponent } from './template/toolbar/toolbar.component';
 import { ContainerComponent } from './template/container/container.component';
 import { ListAssignmentsComponent } from './assignments/list-assignments/list-assignments.component';
 import { LoginComponent } from './login/login.component';
+import { UtilisateurRoutes } from './assignments/utilisateur.routing';
+import { DetailMatiereComponent } from './assignments/list-assignments/detail-matiere/detail-matiere.component';
+import { MatiereResolver } from './assignments/utilisateur.resolvers';
 
 export const routes: Routes = [
   {
@@ -21,7 +24,16 @@ export const routes: Routes = [
           path: 'home', component: AssignmentsComponent
         },
         {
-          path: 'list', component: ListAssignmentsComponent
+          path: 'list', component: ListAssignmentsComponent, children: [
+            {
+              path: ':id',
+              component: DetailMatiereComponent,
+              resolve: {
+                matiere: MatiereResolver
+              }
+            },
+
+          ]
         }
       ]
   },
