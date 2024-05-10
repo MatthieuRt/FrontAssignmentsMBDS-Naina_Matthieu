@@ -27,6 +27,7 @@ export class MatiereResolver implements Resolve<any> {
      * @param state
      */
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+        // alert("MatiereResolver")
         return this._userService.getMatiere(route.paramMap.get('id'))
             .pipe(
                 // Error here means the requested task is not available
@@ -37,9 +38,7 @@ export class MatiereResolver implements Resolve<any> {
 
                     // Get the parent url
                     const parentUrl = state.url.split('/').slice(0, -1).join('/');
-
-                    // Navigate to there
-                    this._router.navigateByUrl(parentUrl);
+                    this._router.navigateByUrl("/list");
 
                     // Throw an error
                     return throwError(error);

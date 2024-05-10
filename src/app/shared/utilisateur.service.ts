@@ -47,6 +47,7 @@ export class UtilisateurService {
       map(user => {
         const matiere = user.matieres.find((mat: Matiere) => mat.id === Number(id)) || null;
         this._matiere.next(matiere);
+        console.log(matiere)
         return matiere;
       })
     );

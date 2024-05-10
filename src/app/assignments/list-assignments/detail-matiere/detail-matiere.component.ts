@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilisateurService } from '../../../shared/utilisateur.service';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail-matiere',
@@ -10,20 +11,21 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './detail-matiere.component.css'
 })
 export class DetailMatiereComponent implements OnInit {
-  
-  matiere:any;
+
+  matiere: any;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
-  
-  constructor(private userServ : UtilisateurService){
+
+  constructor(private userServ: UtilisateurService, private router: Router) {
   }
   ngOnInit(): void {
-    alert("AAAA")
     console.log("Appel  de DetailMatiereComponent ")
     this.userServ.user$.pipe(takeUntil(this._unsubscribeAll))
-    .subscribe((response) => {
-      this.matiere = response;
-      console.log(response);
-    })
+      .subscribe((response) => {
+        this.matiere = response;
+        console.log(response);
+      })
+
+
   }
 
 }

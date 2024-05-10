@@ -27,6 +27,6 @@ export class ListAssignmentsComponent implements OnInit {
     );
   }
   versDetail(id:string){
-    this.router.navigate(['/list/'+id]);
+    this.router.navigate(['/detail/'+id]);
   }
 }
