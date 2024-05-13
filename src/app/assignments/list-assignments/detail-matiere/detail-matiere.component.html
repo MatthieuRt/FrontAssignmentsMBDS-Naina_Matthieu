@@ -91,11 +91,13 @@
                             <div class="text-center">
                                 <div class="font-medium">Rendu</div>
                                 @if(devoir.rendu){
-                                <div class="bg-success/20 text-success rounded px-2 mt-1.5" style="color:green">
-                                    <mat-icon>done</mat-icon></div>
+                                <div class="bg-success/20 text-success rounded px-2 mt-1.5" style="color:#90EE90">
+                                    <mat-icon>done</mat-icon>
+                                </div>
                                 }@else {
                                 <div class="bg-success/20 text-success rounded px-2 mt-1.5" style="color :red">
-                                    <mat-icon>not_interested</mat-icon></div>
+                                    <mat-icon>not_interested</mat-icon>
+                                </div>
                                 }
                             </div>
                         </div>
@@ -115,7 +117,8 @@
                             <div class="text-center">
                                 <div class="font-medium"></div>
                                 <div class="bg-success/20 text-success rounded px-2 mt-1.5">
-                                    <mat-icon>done_all</mat-icon></div>
+                                    <mat-icon>done_all</mat-icon>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -180,16 +183,18 @@
                         Devoir non rendu
                     </h2>
                 </div>
-                <div class="p-5">
-                    @for(devoir of matiere.assignments;track devoir.id) {
+                <div class="p-5" #activeList="cdkDropList" cdkDropList cdkDropListOrientation="vertical"
+                    [cdkDropListData]="listAssignment" [cdkDropListConnectedTo]="[inactiveList]"
+                    (cdkDropListDropped)="drop($event)">
+                    @for(devoir of listAssignment;track devoir.id) {
                     @if(!devoir.rendu) {
-                    <div class="relative flex items-center">
+                    <div class="relative flex items-center" cdkDrag>
                         <div class="w-12 h-12 flex-none image-fit">
                             <img alt="Midone - HTML Admin Template" class="rounded-full"
                                 src="assets/dist/images/profile-11.jpg">
                         </div>
                         <div class="ml-4 mr-auto">
-                            <a href="" class="font-medium">{{devoir.nom}}</a>
+                            <label class="font-medium">{{devoir.nom}}</label>
                         </div>
                     </div>
                     }
@@ -197,151 +202,54 @@
                 </div>
             </div>
             <!-- END: Daily Sales -->
-            <!-- BEGIN: Details d'un assignments -->
+            <!-- BEGIN: Rendre un ou plusieurs devoirs-->
             <div class="intro-y box col-span-12 lg:col-span-6">
                 <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
                     <h2 class="font-medium text-base mr-auto">
-                        Devoir non rendu
+                        Rendre un ou plusieurs devoirs
                     </h2>
                     <div class="dropdown ml-auto sm:hidden">
                         <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
                             data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
                                 class="w-5 h-5 text-slate-500"></i> </a>
                     </div>
-                    <button class="btn btn-success hidden sm:flex text-center"> <i data-lucide="file"
-                            class="w-4 h-4 mr-2"></i> Rendre </button>
+                    <button class="btn hidden sm:flex text-center" style="background-color: #90EE90;"> <i
+                            data-lucide="file" class="w-4 h-4 mr-2"></i> Rendre </button>
                 </div>
-                <div class="p-5">
+                <div class="p-5" #inactiveList="cdkDropList" cdkDropList cdkDropListOrientation="vertical"
+                    [cdkDropListData]="listToRender" [cdkDropListConnectedTo]="[activeList]"
+                    (cdkDropListDropped)="drop($event)">
                     <div class="tab-content">
                         <div id="latest-tasks-new" class="tab-pane active" role="tabpanel"
                             aria-labelledby="latest-tasks-new-tab">
                             <div class="flex items-center">
-                                <div class="border-l-2 border-primary dark:border-primary pl-4">
-                                    <a href="" class="font-medium">Create New Campaign</a>
-                                    <div class="text-slate-500">10:00 AM</div>
+                                @if(listToRender.length>0){
+                                @for(torender of listToRender;track torender.id){
+                                <div class="border-l-2 border-primary dark:border-primary pl-4" cdkDrag
+                                    style="border-color:#ff000c">
+                                    <div class="ml-4 mr-auto">
+                                        <label class="font-medium">{{torender.nom}}</label>
+                                    </div>
                                 </div>
                                 <div class="form-check form-switch ml-auto">
-                                    <input class="form-check-input" type="checkbox">
+                                    <button mat-icon-button color="danger"
+                                        aria-label="Enlevé le devoir"
+                                        (click)="enleverAssignmentToRender(torender)">
+                                        <mat-icon style="color: #ff000c;">delete</mat-icon>
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="flex items-center mt-5">
-                                <div class="border-l-2 border-primary dark:border-primary pl-4">
-                                    <a href="" class="font-medium">Meeting With Client</a>
-                                    <div class="text-slate-500">02:00 PM</div>
-                                </div>
-                                <div class="form-check form-switch ml-auto">
-                                    <input class="form-check-input" type="checkbox">
-                                </div>
-                            </div>
-                            <div class="flex items-center mt-5">
-                                <div class="border-l-2 border-primary dark:border-primary pl-4">
-                                    <a href="" class="font-medium">Create New Repository</a>
-                                    <div class="text-slate-500">04:00 PM</div>
-                                </div>
-                                <div class="form-check form-switch ml-auto">
-                                    <input class="form-check-input" type="checkbox">
-                                </div>
+                                }
+                                }@else {
+                                <p>Déplacez ici les devoirs</p>
+                                }
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- END: Latest Tasks -->
-            <!-- BEGIN: General Statistic -->
-            <!-- <div class="intro-y box col-span-12">
-                <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
-                    <h2 class="font-medium text-base mr-auto">
-                        General Statistics
-                    </h2>
-                    <div class="dropdown ml-auto sm:hidden">
-                        <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
-                            data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
-                                class="w-5 h-5 text-slate-500"></i> </a>
-                        <div class="dropdown-menu w-40">
-                            <ul class="dropdown-content">
-                                <li>
-                                    <a href="javascript:;" class="dropdown-item"> <i data-lucide="file"
-                                            class="w-4 h-4 mr-2"></i> Download XML </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-secondary hidden sm:flex"> <i data-lucide="file"
-                            class="w-4 h-4 mr-2"></i> Download XML </button>
-                </div>
-                <div class="grid grid-cols-1 2xl:grid-cols-7 gap-6 p-5">
-                    <div class="2xl:col-span-2">
-                        <div class="grid grid-cols-2 gap-6">
-                            <div class="col-span-2 sm:col-span-1 2xl:col-span-2 box dark:bg-darkmode-500 p-5">
-                                <div class="font-medium">Net Worth</div>
-                                <div class="flex items-center mt-1 sm:mt-0">
-                                    <div class="mr-4 w-20 flex"> USP: <span
-                                            class="ml-3 font-medium text-success">+23%</span> </div>
-                                    <div class="w-5/6 overflow-auto">
-                                        <div class="h-[51px]">
-                                            <canvas class="simple-line-chart-1" data-random="true"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1 2xl:col-span-2 box dark:bg-darkmode-500 p-5">
-                                <div class="font-medium">Sales</div>
-                                <div class="flex items-center mt-1 sm:mt-0">
-                                    <div class="mr-4 w-20 flex"> USP: <span
-                                            class="ml-3 font-medium text-danger">-5%</span> </div>
-                                    <div class="w-5/6 overflow-auto">
-                                        <div class="h-[51px]">
-                                            <canvas class="simple-line-chart-1" data-random="true"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1 2xl:col-span-2 box dark:bg-darkmode-500 p-5">
-                                <div class="font-medium">Profit</div>
-                                <div class="flex items-center mt-1 sm:mt-0">
-                                    <div class="mr-4 w-20 flex"> USP: <span
-                                            class="ml-3 font-medium text-danger">-10%</span> </div>
-                                    <div class="w-5/6 overflow-auto">
-                                        <div class="h-[51px]">
-                                            <canvas class="simple-line-chart-1" data-random="true"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-span-2 sm:col-span-1 2xl:col-span-2 box dark:bg-darkmode-500 p-5">
-                                <div class="font-medium">Products</div>
-                                <div class="flex items-center mt-1 sm:mt-0">
-                                    <div class="mr-4 w-20 flex"> USP: <span
-                                            class="ml-3 font-medium text-success">+55%</span> </div>
-                                    <div class="w-5/6 overflow-auto">
-                                        <div class="h-[51px]">
-                                            <canvas class="simple-line-chart-1" data-random="true"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="2xl:col-span-5 w-full">
-                        <div class="flex justify-center mt-8">
-                            <div class="flex items-center mr-5">
-                                <div class="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                                <span>Product Profit</span>
-                            </div>
-                            <div class="flex items-center">
-                                <div class="w-2 h-2 bg-slate-300 rounded-full mr-3"></div>
-                                <span>Author Sales</span>
-                            </div>
-                        </div>
-                        <div class="mt-8">
-                            <div class="h-[420px]">
-                                <canvas id="stacked-bar-chart-1"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <!-- END: General Statistic -->
+            <!-- END: Rendre un ou plusieurs devoirs -->
+            <!-- <pre>{{pre}}</pre> -->
         </div>
     </div>
 </div>

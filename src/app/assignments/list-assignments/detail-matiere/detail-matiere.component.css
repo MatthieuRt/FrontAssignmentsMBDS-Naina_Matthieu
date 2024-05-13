@@ -1,0 +1,39 @@
+
+.box-list {
+    display: inline-flex;
+      align-items: center;
+      flex-direction: column;
+    /* when cdkDropListOrientation="horizontal" comment out flex properties below: */
+    /* flex-direction: row; */
+    margin: .5em;
+    padding: .5em 0;
+    width: 45%;
+  }
+  
+  .box-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .drag-box {
+    cursor: move;
+  }
+  
+  .cdk-drag {
+    /* this is the animation that fires for the drag */
+      transition: transform 150ms ease;
+  }
+  
+  .cdk-drag-animating {
+    /* this is the animation that fires for the drop */
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .cdk-drag-placeholder {
+    /* setting opacity to zero makes a blank space between list items during drag preview */
+    opacity: 0;
+  }
+  
+  .cdk-drag-preview {
+  
+  }
+  
