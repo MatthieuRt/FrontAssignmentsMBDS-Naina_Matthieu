@@ -15,6 +15,9 @@ export class UtilisateurService {
   get user$(): Observable<any[]> {
     return this._user.asObservable();
   }
+  get matiere$(): Observable<any> {
+    return this._matiere.asObservable();
+  }
   getUser(id: string | null): Observable<any | undefined> {
     return this.http.get<any>(this.uri + "/" + id)
       .pipe(
@@ -23,7 +26,6 @@ export class UtilisateurService {
 
   }
   getUserById(id: string): Observable<any> {
-    console.log("efa natsoina");
     const url = this.uri + "/" + id
     return this.http.get<any>(url).pipe(
       take(1),
@@ -47,7 +49,6 @@ export class UtilisateurService {
       map(user => {
         const matiere = user.matieres.find((mat: Matiere) => mat.id === Number(id)) || null;
         this._matiere.next(matiere);
-        console.log(matiere)
         return matiere;
       })
     );

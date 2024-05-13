@@ -1,6 +1,6 @@
 <div class="intro-y flex items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">
-        {{ matiere.nom }}
+        {{ matiere.assignments.length }}
     </h2>
 </div>
 <!-- BEGIN: Profile Info -->
@@ -11,7 +11,8 @@
                 <img alt="Midone - HTML Admin Template" class="rounded-full" src="assets/dist/images/profile-11.jpg">
                 <div
                     class="absolute mb-1 mr-1 flex items-center justify-center bottom-0 right-0 bg-primary rounded-full p-2">
-                    <i class="w-4 h-4 text-white" data-lucide="camera"></i> </div>
+                    <i class="w-4 h-4 text-white" data-lucide="camera"></i>
+                </div>
             </div>
             <div class="ml-5">
                 <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">Angelina Jolie</div>
@@ -20,14 +21,12 @@
         </div>
         <div
             class="mt-6 lg:mt-0 flex-1 px-5 border-l border-r border-slate-200/60 dark:border-darkmode-400 border-t lg:border-t-0 pt-5 lg:pt-0">
-            <div class="font-medium text-center lg:text-left lg:mt-3">Contact Details</div>
+            <div class="font-medium text-center lg:text-left lg:mt-3">Nom du professeur : </div>
             <div class="flex flex-col justify-center items-center lg:items-start mt-4">
                 <div class="truncate sm:whitespace-normal flex items-center"> <i data-lucide="mail"
-                        class="w-4 h-4 mr-2"></i> angelinajolieleft4code.com </div>
+                        class="w-4 h-4 mr-2"></i> Contact du prof : </div>
                 <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-lucide="instagram"
                         class="w-4 h-4 mr-2"></i> Instagram Angelina Jolie </div>
-                <div class="truncate sm:whitespace-normal flex items-center mt-3"> <i data-lucide="twitter"
-                        class="w-4 h-4 mr-2"></i> Twitter Angelina Jolie </div>
             </div>
         </div>
         <div
@@ -51,7 +50,7 @@
             </div>
         </div>
     </div>
-    <ul class="nav nav-link-tabs flex-col sm:flex-row justify-center lg:justify-start text-center" role="tablist">
+    <!-- <ul class="nav nav-link-tabs flex-col sm:flex-row justify-center lg:justify-start text-center" role="tablist">
         <li id="dashboard-tab" class="nav-item" role="presentation"> <a href="javascript:;" class="nav-link py-4 active"
                 data-tw-target="#dashboard" aria-controls="dashboard" aria-selected="true" role="tab"> Dashboard </a>
         </li>
@@ -62,41 +61,26 @@
                 data-tw-target="#activities" aria-selected="false" role="tab"> Activities </a> </li>
         <li id="tasks-tab" class="nav-item" role="presentation"> <a href="javascript:;" class="nav-link py-4"
                 data-tw-target="#tasks" aria-selected="false" role="tab"> Tasks </a> </li>
-    </ul>
+    </ul> -->
 </div>
 <!-- END: Profile Info -->
 <div class="intro-y tab-content mt-5">
     <div id="dashboard" class="tab-pane active" role="tabpanel" aria-labelledby="dashboard-tab">
         <div class="grid grid-cols-12 gap-6">
-            <!-- BEGIN: Top Categories -->
+            <!-- BEGIN: Liste des devoirs -->
             <div class="intro-y box col-span-12 lg:col-span-6">
                 <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                     <h2 class="font-medium text-base mr-auto">
-                        Top Categories
+                        Liste des devoirs
                     </h2>
-                    <div class="dropdown ml-auto">
-                        <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
-                            data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
-                                class="w-5 h-5 text-slate-500"></i> </a>
-                        <div class="dropdown-menu w-40">
-                            <ul class="dropdown-content">
-                                <li>
-                                    <a href="" class="dropdown-item"> <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
-                                        Add Category </a>
-                                </li>
-                                <li>
-                                    <a href="" class="dropdown-item"> <i data-lucide="settings"
-                                            class="w-4 h-4 mr-2"></i> Settings </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
                 <div class="p-5">
+                    @if(matiere.assignments.length>0){
+                    @for(devoir of matiere.assignments;track devoir.id) {
                     <div class="flex flex-col sm:flex-row">
                         <div class="mr-auto">
-                            <a href="" class="font-medium">Wordpress Template</a>
-                            <div class="text-slate-500 mt-1">HTML, PHP, Mysql</div>
+                            <a href="" class="font-medium">{{devoir.nom}}</a>
+                            <div class="text-slate-500 mt-1">{{devoir.dateDeRendu |date}}</div>
                         </div>
                         <div class="flex">
                             <div class="w-32 -ml-2 sm:ml-0 mt-5 mr-auto sm:mr-5">
@@ -105,15 +89,22 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <div class="font-medium">6.5k</div>
-                                <div class="bg-success/20 text-success rounded px-2 mt-1.5">+150</div>
+                                <div class="font-medium">Rendu</div>
+                                @if(devoir.rendu){
+                                <div class="bg-success/20 text-success rounded px-2 mt-1.5" style="color:green">
+                                    <mat-icon>done</mat-icon></div>
+                                }@else {
+                                <div class="bg-success/20 text-success rounded px-2 mt-1.5" style="color :red">
+                                    <mat-icon>not_interested</mat-icon></div>
+                                }
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row mt-5">
+                    }
+                    }@else {
+                    <div class="flex flex-col sm:flex-row" style="margin-top: 10%;">
                         <div class="mr-auto">
-                            <a href="" class="font-medium">Bootstrap HTML Template</a>
-                            <div class="text-slate-500 mt-1">HTML, PHP, Mysql</div>
+                            <a href="" class="font-medium">Vous avez aucun devoir(s) à rendre</a>
                         </div>
                         <div class="flex">
                             <div class="w-32 -ml-2 sm:ml-0 mt-5 mr-auto sm:mr-5">
@@ -122,60 +113,25 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <div class="font-medium">2.5k</div>
-                                <div class="bg-pending/10 text-pending rounded px-2 mt-1.5">+150</div>
+                                <div class="font-medium"></div>
+                                <div class="bg-success/20 text-success rounded px-2 mt-1.5">
+                                    <mat-icon>done_all</mat-icon></div>
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col sm:flex-row mt-5">
-                        <div class="mr-auto">
-                            <a href="" class="font-medium">Tailwind HTML Template</a>
-                            <div class="text-slate-500 mt-1">HTML, PHP, Mysql</div>
-                        </div>
-                        <div class="flex">
-                            <div class="w-32 -ml-2 sm:ml-0 mt-5 mr-auto sm:mr-5">
-                                <div class="h-[30px]">
-                                    <canvas class="simple-line-chart-1" data-random="true"></canvas>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-medium">3.4k</div>
-                                <div class="bg-primary/10 text-primary rounded px-2 mt-1.5">+150</div>
-                            </div>
-                        </div>
-                    </div>
+                    }
+
                 </div>
             </div>
-            <!-- END: Top Categories -->
-            <!-- BEGIN: Work In Progress -->
+            <!-- END: Liste des devoirs -->
+            <!-- BEGIN: RENDRE un ou plusieurs devoirs -->
             <div class="intro-y box col-span-12 lg:col-span-6">
-                <div class="flex items-center px-5 py-5 sm:py-0 border-b border-slate-200/60 dark:border-darkmode-400">
-                    <h2 class="font-medium text-base mr-auto">
-                        Work In Progress
+                <div _ngcontent-ng-c3142268681=""
+                    class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400"
+                    bis_skin_checked="1">
+                    <h2 _ngcontent-ng-c3142268681="" class="font-medium text-base mr-auto">
+                        Détails d'un devoir
                     </h2>
-                    <div class="dropdown ml-auto sm:hidden">
-                        <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
-                            data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
-                                class="w-5 h-5 text-slate-500"></i> </a>
-                        <div class="nav nav-tabs dropdown-menu w-40" role="tablist">
-                            <ul class="dropdown-content">
-                                <li> <a id="work-in-progress-mobile-new-tab" href="javascript:;" data-tw-toggle="tab"
-                                        data-tw-target="#work-in-progress-new" class="dropdown-item" role="tab"
-                                        aria-controls="work-in-progress-new" aria-selected="true">New</a> </li>
-                                <li> <a id="work-in-progress-mobile-last-week-tab" href="javascript:;"
-                                        data-tw-toggle="tab" data-tw-target="#work-in-progress-last-week"
-                                        class="dropdown-item" role="tab" aria-selected="false">Last Week</a> </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <ul class="nav nav-link-tabs w-auto ml-auto hidden sm:flex" role="tablist">
-                        <li id="work-in-progress-new-tab" class="nav-item" role="presentation"> <a href="javascript:;"
-                                class="nav-link py-5 active" data-tw-target="#work-in-progress-new"
-                                aria-controls="work-in-progress-new" aria-selected="true" role="tab"> New </a> </li>
-                        <li id="work-in-progress-last-week-tab" class="nav-item" role="presentation"> <a
-                                href="javascript:;" class="nav-link py-5" data-tw-target="#work-in-progress-last-week"
-                                aria-selected="false" role="tab"> Last Week </a> </li>
-                    </ul>
                 </div>
                 <div class="p-5">
                     <div class="tab-content">
@@ -217,94 +173,43 @@
                 </div>
             </div>
             <!-- END: Work In Progress -->
-            <!-- BEGIN: Daily Sales -->
+            <!-- BEGIN: Devoir non Rendu -->
             <div class="intro-y box col-span-12 lg:col-span-6">
-                <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                     <h2 class="font-medium text-base mr-auto">
-                        Daily Sales
+                        Devoir non rendu
                     </h2>
-                    <div class="dropdown ml-auto sm:hidden">
-                        <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
-                            data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
-                                class="w-5 h-5 text-slate-500"></i> </a>
-                        <div class="dropdown-menu w-40">
-                            <ul class="dropdown-content">
-                                <li>
-                                    <a href="javascript:;" class="dropdown-item"> <i data-lucide="file"
-                                            class="w-4 h-4 mr-2"></i> Download Excel </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-secondary hidden sm:flex"> <i data-lucide="file"
-                            class="w-4 h-4 mr-2"></i> Download Excel </button>
                 </div>
                 <div class="p-5">
+                    @for(devoir of matiere.assignments;track devoir.id) {
+                    @if(!devoir.rendu) {
                     <div class="relative flex items-center">
                         <div class="w-12 h-12 flex-none image-fit">
                             <img alt="Midone - HTML Admin Template" class="rounded-full"
                                 src="assets/dist/images/profile-11.jpg">
                         </div>
                         <div class="ml-4 mr-auto">
-                            <a href="" class="font-medium">Angelina Jolie</a>
-                            <div class="text-slate-500 mr-5 sm:mr-5">Bootstrap 4 HTML Admin Template</div>
+                            <a href="" class="font-medium">{{devoir.nom}}</a>
                         </div>
-                        <div class="font-medium text-slate-600 dark:text-slate-500">+$19</div>
                     </div>
-                    <div class="relative flex items-center mt-5">
-                        <div class="w-12 h-12 flex-none image-fit">
-                            <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                src="assets/dist/images/profile-8.jpg">
-                        </div>
-                        <div class="ml-4 mr-auto">
-                            <a href="" class="font-medium">Russell Crowe</a>
-                            <div class="text-slate-500 mr-5 sm:mr-5">Tailwind HTML Admin Template</div>
-                        </div>
-                        <div class="font-medium text-slate-600 dark:text-slate-500">+$25</div>
-                    </div>
-                    <div class="relative flex items-center mt-5">
-                        <div class="w-12 h-12 flex-none image-fit">
-                            <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                src="assets/dist/images/profile-12.jpg">
-                        </div>
-                        <div class="ml-4 mr-auto">
-                            <a href="" class="font-medium">Al Pacino</a>
-                            <div class="text-slate-500 mr-5 sm:mr-5">Vuejs HTML Admin Template</div>
-                        </div>
-                        <div class="font-medium text-slate-600 dark:text-slate-500">+$21</div>
-                    </div>
+                    }
+                    }
                 </div>
             </div>
             <!-- END: Daily Sales -->
-            <!-- BEGIN: Latest Tasks -->
+            <!-- BEGIN: Details d'un assignments -->
             <div class="intro-y box col-span-12 lg:col-span-6">
-                <div class="flex items-center px-5 py-5 sm:py-0 border-b border-slate-200/60 dark:border-darkmode-400">
+                <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
                     <h2 class="font-medium text-base mr-auto">
-                        Latest Tasks
+                        Devoir non rendu
                     </h2>
                     <div class="dropdown ml-auto sm:hidden">
                         <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
                             data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
                                 class="w-5 h-5 text-slate-500"></i> </a>
-                        <div class="nav nav-tabs dropdown-menu w-40" role="tablist">
-                            <ul class="dropdown-content">
-                                <li> <a id="latest-tasks-mobile-new-tab" href="javascript:;" data-tw-toggle="tab"
-                                        data-tw-target="#latest-tasks-new" class="dropdown-item" role="tab"
-                                        aria-controls="latest-tasks-new" aria-selected="true">New</a> </li>
-                                <li> <a id="latest-tasks-mobile-last-week-tab" href="javascript:;" data-tw-toggle="tab"
-                                        data-tw-target="#latest-tasks-last-week" class="dropdown-item" role="tab"
-                                        aria-selected="false">Last Week</a> </li>
-                            </ul>
-                        </div>
                     </div>
-                    <ul class="nav nav-link-tabs w-auto ml-auto hidden sm:flex" role="tablist">
-                        <li id="latest-tasks-new-tab" class="nav-item" role="presentation"> <a href="javascript:;"
-                                class="nav-link py-5 active" data-tw-target="#latest-tasks-new"
-                                aria-controls="latest-tasks-new" aria-selected="true" role="tab"> New </a> </li>
-                        <li id="latest-tasks-last-week-tab" class="nav-item" role="presentation"> <a href="javascript:;"
-                                class="nav-link py-5" data-tw-target="#latest-tasks-last-week" aria-selected="false"
-                                role="tab"> Last Week </a> </li>
-                    </ul>
+                    <button class="btn btn-success hidden sm:flex text-center"> <i data-lucide="file"
+                            class="w-4 h-4 mr-2"></i> Rendre </button>
                 </div>
                 <div class="p-5">
                     <div class="tab-content">
@@ -343,7 +248,7 @@
             </div>
             <!-- END: Latest Tasks -->
             <!-- BEGIN: General Statistic -->
-            <div class="intro-y box col-span-12">
+            <!-- <div class="intro-y box col-span-12">
                 <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
                     <h2 class="font-medium text-base mr-auto">
                         General Statistics
@@ -435,7 +340,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- END: General Statistic -->
         </div>
     </div>
