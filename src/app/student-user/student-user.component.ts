@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilisateurService } from '../../shared/utilisateur.service';
+import { UtilisateurService } from '../shared/utilisateur.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-list-assignments',
+  selector: 'app-student-user',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './list-assignments.component.html',
-  styleUrl: './list-assignments.component.css'
+  templateUrl: './student-user.component.html',
+  styleUrl: './student-user.component.css'
 })
-export class ListAssignmentsComponent implements OnInit {
-
-  user:any = [];
-  constructor(private userServ : UtilisateurService,private router:Router){}
+export class StudentUserComponent implements OnInit{
+  user: any = [];
+  constructor(private userServ: UtilisateurService, private router: Router) { }
   ngOnInit() {
     this.getUserByIdFromService();
   }
@@ -26,7 +25,7 @@ export class ListAssignmentsComponent implements OnInit {
       }
     );
   }
-  versDetail(id:string){
-    this.router.navigate(['/detail/'+id]);
+  versMatiereDetail(id: string) {
+    this.router.navigate(['matiere/detail/' + id]);
   }
 }

@@ -38,7 +38,7 @@ export class MatiereResolver implements Resolve<any> {
 
                     // Get the parent url
                     const parentUrl = state.url.split('/').slice(0, -1).join('/');
-                    this._router.navigateByUrl("/list");
+                    this._router.navigateByUrl("/student");
 
                     // Throw an error
                     return throwError(error);

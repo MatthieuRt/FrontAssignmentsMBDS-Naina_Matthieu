@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, take } from 'rxjs/operators';
-import { Matiere } from '../assignments/matiere.model';
+import { Matiere } from '../student-user/matiere.model';
 @Injectable({
   providedIn: 'root'
 })

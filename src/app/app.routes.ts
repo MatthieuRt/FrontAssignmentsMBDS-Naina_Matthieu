@@ -7,11 +7,10 @@ import { authGuard } from './shared/auth.guard';
 import { TemplateComponent } from './template/template/template.component';
 import { ToolbarComponent } from './template/toolbar/toolbar.component';
 import { ContainerComponent } from './template/container/container.component';
-import { ListAssignmentsComponent } from './assignments/list-assignments/list-assignments.component';
 import { LoginComponent } from './login/login.component';
-import { UtilisateurRoutes } from './assignments/utilisateur.routing';
-import { DetailMatiereComponent } from './assignments/list-assignments/detail-matiere/detail-matiere.component';
-import { MatiereResolver } from './assignments/utilisateur.resolvers';
+import { StudentUserComponent } from './student-user/student-user.component';
+import { DetailMatiereComponent } from './student-user/detail-matiere/detail-matiere.component';
+import { MatiereResolver } from './student-user/utilisateur.resolvers';
 
 export const routes: Routes = [
   {
@@ -24,14 +23,15 @@ export const routes: Routes = [
           path: 'home', component: AssignmentsComponent
         },
         {
-          path: 'detail/:id', component: DetailMatiereComponent,
+          path: 'student', component: StudentUserComponent,
+        },
+        {
+          path: 'matiere/detail/:id', component: DetailMatiereComponent,
           resolve: {
             matiere: MatiereResolver
           }
         },
-        {
-          path: 'list', component: ListAssignmentsComponent,
-        }
+        
       ]
   },
   { path: "add", component: AddAssignmentComponent },

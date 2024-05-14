@@ -1,17 +1,17 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { UtilisateurService } from '../../../shared/utilisateur.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Matiere } from '../matiere.model';
+import { UtilisateurService } from '../../shared/utilisateur.service';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Matiere } from '../../matiere.model';
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatSidenavModule } from '@angular/material/sidenav';
-
 @Component({
   selector: 'app-detail-matiere',
   standalone: true,
   imports: [CommonModule,
+    MatIcon,
     MatIconModule,
     DragDropModule,
     MatSidenavModule,
@@ -19,8 +19,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   templateUrl: './detail-matiere.component.html',
   styleUrl: './detail-matiere.component.css'
 })
-export class DetailMatiereComponent implements OnInit, OnDestroy {
-
+export class DetailMatiereComponent implements OnInit, OnDestroy  {
   matiere: any;
   matiereDetail: Matiere | undefined;
   assignmentToRender: Matiere[] = [];
@@ -30,7 +29,7 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(private userServ: UtilisateurService, private router: Router,
-              private _changeDetectorRef: ChangeDetectorRef,) {
+    private _changeDetectorRef: ChangeDetectorRef,) {
   }
   ngOnInit(): void {
     console.log("Appel  de DetailMatiereComponent ")
@@ -44,15 +43,14 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
         });
       })
   }
-   /**
-     * On destroy
-     */
-   ngOnDestroy(): void
-   {
-       // Unsubscribe from all subscriptions
-       this._unsubscribeAll.next(null);
-       this._unsubscribeAll.complete();
-   }
+  /**
+    * On destroy
+    */
+  ngOnDestroy(): void {
+    // Unsubscribe from all subscriptions
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       console.log('dropped Event', `> dropped '${event.item.data}' into '${event.container.id}'`);
@@ -85,11 +83,11 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
 
     listTorender:
     ${JSON.stringify(this.listToRender, null, ' ')}`;
-    enleverAssignmentToRender(torender: Matiere) {
-      const index = this.listToRender.indexOf(torender);
-      if (index !== -1) {
-        this.listAssignment.push(torender);
-        this.listToRender.splice(index, 1);
-      }
+  enleverAssignmentToRender(torender: Matiere) {
+    const index = this.listToRender.indexOf(torender);
+    if (index !== -1) {
+      this.listAssignment.push(torender);
+      this.listToRender.splice(index, 1);
     }
+  }
 }
