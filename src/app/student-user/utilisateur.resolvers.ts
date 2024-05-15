@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
 import { UtilisateurService } from "../shared/utilisateur.service";
-import { Observable, catchError, throwError } from "rxjs";
+import { Observable, catchError, map, throwError } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +30,9 @@ export class MatiereResolver implements Resolve<any> {
         // alert("MatiereResolver")
         return this._userService.getMatiere(route.paramMap.get('id'))
             .pipe(
+                map(()=>{
+                    this._userService.getAssignmentByIdStudent_IdMatiere(route.paramMap.get('id')).subscribe();
+                }),
                 // Error here means the requested task is not available
                 catchError((error) => {
 

@@ -7,6 +7,7 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { Assignment } from '../assignment.model';
 @Component({
   selector: 'app-detail-matiere',
   standalone: true,
@@ -19,12 +20,15 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   templateUrl: './detail-matiere.component.html',
   styleUrl: './detail-matiere.component.css'
 })
-export class DetailMatiereComponent implements OnInit, OnDestroy  {
+export class DetailMatiereComponent implements OnInit, OnDestroy {
   matiere: any;
   matiereDetail: Matiere | undefined;
   assignmentToRender: Matiere[] = [];
   listAssignment: any[] = [];
+  listAssignmentNonRendu: any[] = [];
   listToRender: any[] = [];
+
+  selectedAssignment: Assignment | undefined;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -36,11 +40,24 @@ export class DetailMatiereComponent implements OnInit, OnDestroy  {
     this.userServ.matiere$.pipe(takeUntil(this._unsubscribeAll))
       .subscribe((response) => {
         this.matiere = response;
-        this.matiere.assignments.forEach((devoir: any) => {
-          if (!devoir.rendu) {
-            this.listAssignment.push(devoir)
-          }
-        });
+        // this.matiere.assignments.forEach((devoir: any) => {
+        //   if (!devoir.rendu) {
+        //     this.listAssignment.push(devoir)
+        //   }
+        // });
+      })
+    this.userServ.assignmentStudent$.pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((response: any) => {
+        if (response != null && response != undefined) {
+          this.listAssignment = response.docs;
+          this.listAssignment.forEach((devoir: any) => {
+            if (!devoir.rendu) {
+              this.listAssignmentNonRendu.push(devoir)
+            }
+          })
+          console.log(this.listAssignment)
+        }
+
       })
   }
   /**
@@ -86,8 +103,14 @@ export class DetailMatiereComponent implements OnInit, OnDestroy  {
   enleverAssignmentToRender(torender: Matiere) {
     const index = this.listToRender.indexOf(torender);
     if (index !== -1) {
-      this.listAssignment.push(torender);
+      this.listAssignmentNonRendu.push(torender);
       this.listToRender.splice(index, 1);
     }
+  }
+  selectAssignmentForDetail(assignment: Assignment) {
+    this.selectedAssignment = assignment;
+  }
+  resetSelectedAssignment() {
+    this.selectedAssignment = undefined;
   }
 }

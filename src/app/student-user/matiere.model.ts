@@ -1,7 +1,7 @@
 export class Matiere {
-    id?: Number;
-    Matiere?: String;
+    _id!: string;
+    Matiere!: String;
     image?: String;
-    professeur_id?: String;
-    assignments?: any;
+    professeur_id!: String;
+    prof_img ?:String;
 }
