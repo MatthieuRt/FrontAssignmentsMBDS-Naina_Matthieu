@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AssignmentsComponent } from './assignments/assignments.component';
+// import { AssignmentsComponent } from './assignments/assignments.component';
 import { AddAssignmentComponent } from './assignments/add-assignment/add-assignment.component';
 import { AssignmentDetailComponent } from './assignments/assignment-detail/assignment-detail.component';
 import { EditAssignmentComponent } from './assignments/edit-assignment/edit-assignment.component';
@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { StudentUserComponent } from './student-user/student-user.component';
 import { DetailMatiereComponent } from './student-user/detail-matiere/detail-matiere.component';
 import { MatiereResolver } from './student-user/utilisateur.resolvers';
+import { AssignmentsComponent } from './student-user/assignments/assignments.component';
 
 export const routes: Routes = [
   {
@@ -19,9 +20,9 @@ export const routes: Routes = [
   {
     path: '', component: TemplateComponent, children:
       [
-        {
-          path: 'home', component: AssignmentsComponent
-        },
+        // {
+        //   path: 'home', component: AssignmentsComponent
+        // },
         {
           path: 'student', component: StudentUserComponent,
         },
@@ -31,6 +32,9 @@ export const routes: Routes = [
             matiere: MatiereResolver
           }
         },
+        {
+          path: 'student/assignment', component: AssignmentsComponent,
+        }
         
       ]
   },

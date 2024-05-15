@@ -1,0 +1,64 @@
+<h2 class="intro-y text-lg font-medium mt-10">
+    Liste de vos assignments
+</h2>
+<div class="grid grid-cols-12 gap-6 mt-5">
+    <!-- BEGIN: Users Layout -->
+    <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+        <nav class="w-full sm:w-auto sm:mr-auto">
+            <mat-slider
+            min="1"
+            max="10"
+            step="1"
+            thumbLabel
+          >
+          <input matSliderThumb [(ngModel)]="limit" (change)="getAssignmentsFromService()">
+        </mat-slider>
+            <!-- <div>
+                <button mat-raised-button color="primary"
+                        [disabled]="!hasPrevPage"
+                        [disabled]="!hasPrevPage"
+                        (click)="premierePage()">Première
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="primary"
+                        [disabled]="!hasPrevPage"
+                        (click)="pagePrecedente()">Précédent
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="primary"
+                        [disabled]="!hasNextPage"
+                        (click)="pageSuivante()">Suivante
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button mat-raised-button color="primary"
+                        [disabled]="!hasNextPage"
+                        (click)="dernierePage()">Dernière
+                </button>
+            </div> -->
+        </nav>
+        <mat-paginator #paginator 
+        class="demo-paginator" (page)="handlePageEvent($event)" 
+        [length]="totalPages"
+        [pageSize]="limit" [showFirstLastButtons]="true" [pageSizeOptions]="[5, 10, 25]" [pageIndex]="page"
+        aria-label="Select page">
+        </mat-paginator>
+    </div>
+    <mat-card class="intro-y col-span-12 md:col-span-6 example-card">
+        <mat-card-header class="box">
+            <mat-card-title>Shiba Inu</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <p>This card indeterminates progress bar.</p>
+            <p></p>
+        </mat-card-content>
+        <mat-card-actions class="flex">
+            <button class="btn btn-primary py-1 px-2 mr-2">Message</button>
+            <button class="btn btn-outline-secondary py-1 px-2">Profile</button>
+        </mat-card-actions>
+    </mat-card>
+      
+    <!-- BEGIN: Users Layout -->
+    <!-- END: Pagination -->
+    
+    <!-- END: Pagination -->
+</div>

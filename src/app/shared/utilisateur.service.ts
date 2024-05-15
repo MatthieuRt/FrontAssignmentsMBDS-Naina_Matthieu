@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, take } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
 import { Matiere } from '../student-user/matiere.model';
 import { Assignment } from '../student-user/assignment.model';
 @Injectable({
@@ -9,10 +9,11 @@ import { Assignment } from '../student-user/assignment.model';
 })
 export class UtilisateurService {
   uri = "http://localhost:8010/api/users";
+  uri_matiere = "http://localhost:8010/api/";
   private _user: BehaviorSubject<any | null> = new BehaviorSubject(null);
   private _listMatieres: BehaviorSubject<Matiere[] | null> = new BehaviorSubject<Matiere[] | null>(null);
   private _matiere: BehaviorSubject<Matiere | null> = new BehaviorSubject<Matiere | null>(null);
-  private _assignmentStudent : BehaviorSubject<Assignment[] | null> = new BehaviorSubject<Assignment[] | null>(null);
+  private _assignmentStudent: BehaviorSubject<Assignment[] | null> = new BehaviorSubject<Assignment[] | null>(null);
   constructor(private http: HttpClient) { }
 
   get user$(): Observable<any> {
@@ -21,7 +22,7 @@ export class UtilisateurService {
   get matiere$(): Observable<any> {
     return this._matiere.asObservable();
   }
-  get assignmentStudent$() : Observable<Assignment[] | null>{
+  get assignmentStudent$(): Observable<Assignment[] | null> {
     return this._assignmentStudent;
   }
 
@@ -43,7 +44,7 @@ export class UtilisateurService {
       })
     );
   }
-  getMatieresByIduser(id:string): Observable<any>{
+  getMatieresByIduser(id: string): Observable<any> {
     const url = this.uri + "/matiere/" + id
     console.log(url)
     return this.http.get<any>(url).pipe(
@@ -61,7 +62,7 @@ export class UtilisateurService {
       })
     );
   }
-  getMatiere(id: string|null): Observable<Matiere | null> {
+  getMatiere(id: string | null): Observable<Matiere | null> {
     return this._listMatieres.pipe(
       take(1),
       map((matieres: Matiere[] | null) => {
@@ -71,11 +72,11 @@ export class UtilisateurService {
       })
     );
   }
-  getAssignmentByIdStudent_IdMatiere(idMatiere:string|null): Observable<Assignment>{
+  getAssignmentByIdStudent_IdMatiere(idMatiere: string | null): Observable<Assignment> {
     // let idEtudiant =  sessionStorage.getItem("idEtudiant");
     let idEtudiant = "663a52b9946fa30b7711db7d";
     // const url = this.uri + "/assignments/663a52b9946fa30b7711db7d/66433f5b0c3e8e917d4e9a6a"
-    const url = this.uri + "/assignments/" + idEtudiant+"/"+idMatiere;
+    const url = this.uri + "/assignments/" + idEtudiant + "/" + idMatiere;
     console.log(url)
     return this.http.get<any>(url).pipe(
       map((reponse) => {
@@ -85,14 +86,36 @@ export class UtilisateurService {
       switchMap((assignments) => {
 
         if (!assignments) {
-          return throwError('Il n\'y a pas d\'assignment pour {idEtudiant:  ' + idEtudiant + ',idMatiere: '+idMatiere);
+          return throwError('Il n\'y a pas d\'assignment pour {idEtudiant:  ' + idEtudiant + ',idMatiere: ' + idMatiere);
         }
 
         return of(assignments);
       })
     );
   }
-
+  getAssignmentByIdStudent(page: number, limit: number): Observable<any> {
+    // let idEtudiant =  sessionStorage.getItem("idEtudiant");
+    let idEtudiant = "663a52b9946fa30b7711db7d";
+    const url = this.uri + "/assignments/" + idEtudiant + "?page=" + page + "&limit=" + limit
+    return this.http.get<any>(url).pipe(
+      map((response: any) => {
+        let listAssignment = response.docs
+        let reponse = response;
+        response.docs.forEach(async (assignment: any) => {
+          await this.getMatiereById(assignment.idMatiere).subscribe(matiereResponse => {
+            assignment.matiere_img = matiereResponse.image
+            assignment.prof_img = matiereResponse.prof_img
+          })
+        })
+        reponse.docs = listAssignment
+        return reponse
+      })
+    )
+  }
+  getMatiereById(idMatiere: string): Observable<Matiere> {
+    const url = this.uri_matiere + "matiere/" + idMatiere;
+    return this.http.get<any>(url);
+  }
   private handleError<T>(operation: any, result?: T) {
     return (error: any): Observable<T> => {
       console.log(error); // pour afficher dans la console
