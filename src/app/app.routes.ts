@@ -12,10 +12,14 @@ import { StudentUserComponent } from './student-user/student-user.component';
 import { DetailMatiereComponent } from './student-user/detail-matiere/detail-matiere.component';
 import { MatiereResolver } from './student-user/utilisateur.resolvers';
 import { AssignmentsComponent } from './student-user/assignments/assignments.component';
+import { RegisterComponent } from './register/register.component';
 
 export const routes: Routes = [
   {
     path: 'login', component: LoginComponent
+  },
+  {
+    path: 'register', component: RegisterComponent
   },
   {
     path: '', component: TemplateComponent,canActivate: [authGuard], children:
