@@ -40,6 +40,24 @@ export class AuthService {
     localStorage.clear();
   }
 
+  // méthode pour inscrire l'utilisateur
+  register(nom:string,email:string,password:string,role:string){
+    let body = {nom,email,password,role}
+    return this.http.post<any>(this.uri + "/register", body)
+      .pipe(
+        map((response) => {
+          let user = JSON.stringify(response.user);
+          localStorage.setItem("TOKEN_KEY", response.token);
+          localStorage.setItem("USER", user);
+          this.loggedIn = true;
+          return true;
+        }),
+        catchError((error) => {
+          return error;
+        })
+      );
+  }
+
   // methode qui indique si on est connecté en tant qu'admin ou pas
   // pour le moment, on est admin simplement si on est connecté
   // En fait cette méthode ne renvoie pas directement un booleén

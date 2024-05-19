@@ -39,6 +39,10 @@
                       </h2>
                       <form (ngSubmit)="register()">
                         <mat-form-field appearance="fill" class="w-full mb-4">
+                            <mat-label>Nom</mat-label>
+                            <input matInput type="text" [(ngModel)]="name" name="name" required>
+                          </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-full mb-4">
                           <mat-label>Email</mat-label>
                           <input matInput type="email" [(ngModel)]="email" name="email" required>
                         </mat-form-field>
@@ -54,12 +58,11 @@
                             <mat-label>Type d'utilisateur</mat-label>
                             <mat-select [(ngModel)]="role" name="role">
                               <mat-option value="prof">Prof</mat-option>
-                              <mat-option value="etudiant">Étudiant</mat-option>
+                              <mat-option value="eleve">Étudiant</mat-option>
                             </mat-select>
                           </mat-form-field>
                         <div class="flex justify-center xl:justify-start">
                           <button mat-raised-button type="submit" class="mr-3">S'inscrire</button>
-                          <button mat-raised-button color="accent">Se connecter</button>
                         </div>
                       </form>
                       <div class="mt-8 text-center xl:text-left text-slate-600 dark:text-slate-500">

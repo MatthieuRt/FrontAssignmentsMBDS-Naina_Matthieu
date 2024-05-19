@@ -6,6 +6,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
+import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -23,12 +25,19 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  name: string=''
   email: string='';
   password: string='';
   confirmPassword: string='';
   role: string=''
 
-  constructor() { }
+  constructor(private router: Router,private authService: AuthService) { }
+
+  ngOnInit(){
+    if(localStorage.getItem("USER")){
+      this.router.navigate(['/'])
+    }
+  }
 
   register(): void {
     // Vérifier si les mots de passe correspondent
@@ -37,16 +46,12 @@ export class RegisterComponent {
       return;
     }
 
-    // Si les mots de passe correspondent, procédez à l'enregistrement de l'utilisateur
-    // Vous pouvez implémenter ici la logique pour envoyer les données du formulaire au backend
-    // et traiter la réponse
-    console.log('Email:', this.email);
-    console.log('Mot de passe:', this.password);
-    console.log('Confirmation du mot de passe:', this.confirmPassword);
-
-    // Réinitialiser les champs du formulaire après l'enregistrement
-    this.email = '';
-    this.password = '';
-    this.confirmPassword = '';
+    this.authService.register(this.name,this.email,this.password,this.role).subscribe(
+      (response)=>{
+        this.router.navigate(['/'])
+      },(error)=>{
+        alert('Une erreur est survenue, veuillez réessayer')
+      }
+    )
   }
 }
