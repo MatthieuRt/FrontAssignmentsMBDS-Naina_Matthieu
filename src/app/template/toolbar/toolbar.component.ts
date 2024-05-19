@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../shared/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar',
@@ -8,5 +10,10 @@ import { Component } from '@angular/core';
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
+  constructor(private authService: AuthService,private router: Router){}
 
+  logOut(){
+    this.authService.logOut()
+    this.router.navigate(['/login'])
+  }
 }
