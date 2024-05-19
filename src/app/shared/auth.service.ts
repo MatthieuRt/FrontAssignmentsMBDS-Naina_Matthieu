@@ -10,6 +10,7 @@ export class AuthService {
 
   // propriété pour savoir si l'utilisateur est connecté
   loggedIn = false;
+  admin = false;
 
   constructor(private http: HttpClient) { }
 
@@ -68,13 +69,17 @@ export class AuthService {
   // this.authService.isAdmin().then(....) ou
   // admin = await this.authService.isAdmin()
   isAdmin() {
-    const promesse = new Promise((resolve, reject) => {
-      // ici accès BD? Web Service ? etc...
-      resolve(this.loggedIn);
-      // pas de cas d'erreur ici, donc pas de reject
+    return new Promise<boolean>((resolve, reject) => {
+      const userStr = localStorage.getItem('USER');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        const isAdmin = user.role === 'admin';
+        this.admin = true;
+        resolve(this.admin);
+      } else {
+        resolve(this.admin);
+      }
     });
-
-    return promesse;
   }
 
   isLoggedIn(){

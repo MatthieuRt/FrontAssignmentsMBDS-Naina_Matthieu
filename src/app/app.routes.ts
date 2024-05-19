@@ -13,6 +13,7 @@ import { DetailMatiereComponent } from './student-user/detail-matiere/detail-mat
 import { MatiereResolver } from './student-user/utilisateur.resolvers';
 import { AssignmentsComponent } from './student-user/assignments/assignments.component';
 import { RegisterComponent } from './register/register.component';
+import { adminGuard } from './shared/admin.guard';
 
 export const routes: Routes = [
   {
