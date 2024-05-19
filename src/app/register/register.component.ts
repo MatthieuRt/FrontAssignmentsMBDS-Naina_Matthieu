@@ -6,7 +6,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatOption } from '@angular/material/core';
 import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../shared/auth.service';
 
 @Component({
@@ -19,7 +19,8 @@ import { AuthService } from '../shared/auth.service';
     HttpClientModule,
     MatFormField,
     MatOption,
-    MatSelectModule
+    MatSelectModule,
+    RouterModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
