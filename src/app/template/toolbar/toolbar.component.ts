@@ -10,7 +10,16 @@ import { Router } from '@angular/router';
   styleUrl: './toolbar.component.css'
 })
 export class ToolbarComponent {
+  userConnected : any = {}
   constructor(private authService: AuthService,private router: Router){}
+
+  ngOnInit(){
+    const local = localStorage.getItem("USER")
+    if(local){
+      this.userConnected = JSON.parse(local)
+    }
+    
+  }
 
   logOut(){
     this.authService.logOut()
