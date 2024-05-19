@@ -32,6 +32,7 @@ export class AuthService {
   // méthode pour déconnecter l'utilisateur
   logOut() {
     this.loggedIn = false;
+    localStorage.clear();
   }
 
   // methode qui indique si on est connecté en tant qu'admin ou pas
