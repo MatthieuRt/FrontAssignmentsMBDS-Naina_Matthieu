@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { BrowserModule } from '@angular/platform-browser';
+import { AuthService } from '../shared/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +22,18 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor() { }
+  constructor(private authService: AuthService,private router:Router) { }
 
   login() {
     //logique de connexion
-    console.log(this.email)
-    console.log(this.password)
+    this.authService.logIn(this.email,this.password).subscribe(
+      (response)=>{
+        if(response){
+          this.router.navigate(['/'])
+        }
+      },(error)=>{
+        alert('Nom d utilisateur ou mdp erroné')
+      }
+    )
   }
 }
