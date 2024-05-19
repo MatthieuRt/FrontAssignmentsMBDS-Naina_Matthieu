@@ -58,4 +58,14 @@ export class AuthService {
 
     return promesse;
   }
+
+  isLoggedIn(){
+    const promesse = new Promise((resolve, reject) => {
+      // vérifie si USER existe dans localStorage
+      resolve(localStorage.getItem("USER")!==null);
+      // pas de cas d'erreur ici, donc pas de reject
+    });
+
+    return promesse;
+  }
 }

@@ -10,6 +10,18 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   //return authService.loggedIn;
+  return authService.isLoggedIn()
+    .then(loggedIn => {
+        if (loggedIn) {
+          console.log("Utilisateur connecté");
+          return true;
+        } else {
+          console.log("Utilisateur non connecté");
+          router.navigate(['/login']);
+          return false;
+        }
+      }
+    );
 
   // C'est mieux d'utiliser une Promise car souvent
   // la fonction qui vérifie a besoin de faire une requête
@@ -17,7 +29,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   // autorisé à accéder à la page. C'est ASYNCHRONE !
   // Donc la bonne pratique est d'implémenter isAdmin ou isLogged
   // comme une promesse qui renvoie un booléen.
-  return authService.isAdmin()
+  /*return authService.isAdmin()
     .then(admin => {
         if (admin) {
           console.log("GUARD: Navigation autorisée");
@@ -28,6 +40,6 @@ export const authGuard: CanActivateFn = (route, state) => {
           return false;
         }
       }
-    );
+    );*/
     
 };
