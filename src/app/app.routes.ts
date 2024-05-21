@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 // import { AssignmentsComponent } from './assignments/assignments.component';
-import { AddAssignmentComponent } from './assignments/add-assignment/add-assignment.component';
+import { AddAssignmentComponent } from './student-user/assignments/add-assignment/add-assignment.component';
 import { AssignmentDetailComponent } from './assignments/assignment-detail/assignment-detail.component';
 import { EditAssignmentComponent } from './assignments/edit-assignment/edit-assignment.component';
 import { authGuard } from './shared/auth.guard';
@@ -38,9 +38,11 @@ export const routes: Routes = [
           }
         },
         {
-          path: 'student/assignment', component: AssignmentsComponent,
+          path: 'student/assignment', component: AssignmentsComponent
+        },
+        {
+          path: 'assignment/add', component: AddAssignmentComponent
         }
-        
       ]
   },
   { path: "add", component: AddAssignmentComponent },
