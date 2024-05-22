@@ -27,6 +27,9 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
   listAssignment: any[] = [];
   listAssignmentNonRendu: any[] = [];
   listToRender: any[] = [];
+  totalNonRendu : number = 0;
+  totalAssignment : number = 0;
+  professeur:any;
 
   selectedAssignment: Assignment | undefined;
 
@@ -40,21 +43,22 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
     this.userServ.matiere$.pipe(takeUntil(this._unsubscribeAll))
       .subscribe((response) => {
         this.matiere = response;
-        // this.matiere.assignments.forEach((devoir: any) => {
-        //   if (!devoir.rendu) {
-        //     this.listAssignment.push(devoir)
-        //   }
-        // });
+        this.userServ.getUserById(this.matiere.professeur_id).subscribe((resp)=>{
+          this.professeur = resp
+          console.log(this.professeur)
+        })
       })
     this.userServ.assignmentStudent$.pipe(takeUntil(this._unsubscribeAll))
       .subscribe((response: any) => {
         if (response != null && response != undefined) {
           this.listAssignment = response.docs;
+          this.totalAssignment = this.listAssignment.length
           this.listAssignment.forEach((devoir: any) => {
             if (!devoir.rendu) {
               this.listAssignmentNonRendu.push(devoir)
             }
           })
+          this.totalNonRendu = this.listAssignmentNonRendu.length
           console.log(this.listAssignment)
         }
 
