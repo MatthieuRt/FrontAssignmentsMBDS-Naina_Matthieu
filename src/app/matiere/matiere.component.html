@@ -1,0 +1,55 @@
+<h2 class="intro-y text-lg font-medium mt-10">
+    Création d'une matière
+  </h2>
+  <div class="intro-y col-span-12 lg:col-span-6">
+    <div class="intro-y box">
+      <div class="flex flex-col sm:flex-row items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+        <h2 class="font-medium text-base mr-auto">
+          Créer une matière
+        </h2>
+      </div>
+      <div id="file-type-validation" class="p-5">
+        <div class="preview">
+          <form [formGroup]="createMatiereForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="example-full-width">
+                <mat-label>Nom de la matière</mat-label>
+                <input matInput placeholder="Ex. Design web" formControlName="nomMatiere">
+            </mat-form-field>
+            <br>
+            <mat-form-field appearance="fill" class="taille">
+                <mat-label>Glissez ou cliquez ici pour choisir l'image!</mat-label>
+                <ngx-mat-dropzone >
+                  <input type="file" fileInput [formControl]="matiereImg" />
+                  @if (matiereImg.value) {
+                  <mat-chip-row (removed)="clear()">
+                    {{ matiereImg.value?.name }}
+                    <button matChipRemove>
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+                  }
+                </ngx-mat-dropzone>
+                <mat-icon matSuffix color="primary">cloud_upload</mat-icon>
+              </mat-form-field>
+              <br>
+              <button mat-fab extended color="accent" type="submit">
+                <mat-icon>create</mat-icon>
+                Accent
+              </button>
+          </form>
+        </div>
+        <div class="source-code hidden">
+          <button data-target="#copy-file-type-validation" class="copy-code btn py-1 px-2 btn-outline-secondary">
+            <i data-lucide="file" class="w-4 h-4 mr-2"></i> Copy example code
+          </button>
+          <div class="overflow-y-auto mt-3 rounded-md">
+            <pre id="copy-file-type-validation" class="source-preview">
+              <code class="html">
+                </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  
