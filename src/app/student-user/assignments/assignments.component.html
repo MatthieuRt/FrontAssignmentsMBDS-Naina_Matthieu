@@ -5,14 +5,28 @@
     <!-- BEGIN: Users Layout -->
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
         <nav class="w-full sm:w-auto sm:mr-auto">
-            <mat-slider
-            min="1"
-            max="10"
-            step="1"
-            thumbLabel
-          >
-          <input matSliderThumb [(ngModel)]="limit" (change)="getAssignmentsFromService()">
-        </mat-slider>
+            <mat-form-field>
+                <mat-label>Filtre</mat-label>
+                <mat-select [formControl]="filtreControl">
+                    <mat-optgroup [label]="'Rendu'" [disabled]="'false'">
+                        <mat-option [value]="'note'">Noté</mat-option>
+                        <mat-option [value]="'enAttente'">En attente</mat-option>
+                    </mat-optgroup>
+                    <mat-optgroup [label]="'Non rendu'" [disabled]="'false'">
+                        <mat-option [value]="'toNote'">Non rendu</mat-option>
+                    </mat-optgroup>
+                    <mat-optgroup [label]="''" [disabled]="'false'">
+                        <mat-option [value]="'reset'">Réinitialiser</mat-option>
+                    </mat-optgroup>
+                </mat-select>
+            </mat-form-field>
+                <button mat-fab color="warn" aria-label="Réinitialiser le filtre" (click)="reset()">
+                  <mat-icon>refresh</mat-icon>
+                </button>
+            <mat-slider min="1" max="{{totalDocs}}" step="1" thumbLabel>
+                <input matSliderThumb [(ngModel)]="limit" (change)="getAssignmentsFromService()">
+            </mat-slider>
+
             <!-- <div>
                 <button mat-raised-button color="primary"
                         [disabled]="!hasPrevPage"
@@ -36,29 +50,29 @@
                 </button>
             </div> -->
         </nav>
-        <mat-paginator #paginator 
-        class="demo-paginator" (page)="handlePageEvent($event)" 
-        [length]="totalPages"
-        [pageSize]="limit" [showFirstLastButtons]="true" [pageSizeOptions]="[5, 10, 25]" [pageIndex]="page"
-        aria-label="Select page">
+        <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="totalPages"
+            [pageSize]="limit" [showFirstLastButtons]="true" [pageIndex]="page" aria-label="Select page">
         </mat-paginator>
     </div>
+    @for(assignment of listAssignments;track assignment._id){
     <mat-card class="intro-y col-span-12 md:col-span-6 example-card">
-        <mat-card-header class="box">
-            <mat-card-title>Shiba Inu</mat-card-title>
+        <mat-card-header>
+            <div mat-card-avatar class="example-header-image"
+                style=" background-image: url('assets/dist/images/{{assignment.matiere_img}}');"></div>
+            <mat-card-title>{{assignment.nom}}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <p>This card indeterminates progress bar.</p>
+            <mat-card-subtitle>{{assignment.matiere}}</mat-card-subtitle>
+            <p>{{assignment.instruction}}</p>
             <p></p>
         </mat-card-content>
         <mat-card-actions class="flex">
-            <button class="btn btn-primary py-1 px-2 mr-2">Message</button>
-            <button class="btn btn-outline-secondary py-1 px-2">Profile</button>
+            <button class="btn btn-outline-secondary py-1 px-2">Voir détails</button>
         </mat-card-actions>
     </mat-card>
-      
+    }
     <!-- BEGIN: Users Layout -->
     <!-- END: Pagination -->
-    
+
     <!-- END: Pagination -->
 </div>

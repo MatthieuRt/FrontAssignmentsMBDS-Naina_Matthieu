@@ -103,6 +103,7 @@ export class UtilisateurService {
         let reponse = response;
         response.docs.forEach(async (assignment: any) => {
           await this.getMatiereById(assignment.idMatiere).subscribe(matiereResponse => {
+            assignment.matiere = matiereResponse.Matiere
             assignment.matiere_img = matiereResponse.image
             assignment.prof_img = matiereResponse.prof_img
           })
