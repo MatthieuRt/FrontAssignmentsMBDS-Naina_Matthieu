@@ -33,6 +33,8 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 export class AddAssignmentComponent {
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+  private _unsubscribeEtudiant : Subject<any> = new Subject<any>();
+
   myControl = new FormControl('');
   listeMatieres: any
   listeEtudiants: any
@@ -57,15 +59,10 @@ export class AddAssignmentComponent {
 
   ngOnInit() {
     this.assignmentService.getMatieres().subscribe();
-    this.assignmentService.getEtudiants().subscribe();
+
     this.assignmentService.matieres$.pipe(takeUntil(this._unsubscribeAll))
       .subscribe((response: any) => {
         this.listeMatieres = response;
-      })
-
-    this.assignmentService.etudiants$.pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((response: any) => {
-        this.listeEtudiants = response?.docs;
       })
   }
 
@@ -83,6 +80,18 @@ export class AddAssignmentComponent {
         }
       })
     );
+  }
+
+  loadEtudiants(){
+    if(this.myControl.value!==null){
+      let idMatiere = this.myControl.value
+      idMatiere = this.listeMatieres.find((element: any) => element.Matiere === idMatiere)?._id;
+      this.assignmentService.getEtudiantsParMatiere(idMatiere).subscribe();      
+    this.assignmentService.etudiants$.pipe(takeUntil(this._unsubscribeEtudiant))
+    .subscribe((response: any) => {
+      this.listeEtudiants = response;
+    })
+    }
   }
 
   enregistrer() {

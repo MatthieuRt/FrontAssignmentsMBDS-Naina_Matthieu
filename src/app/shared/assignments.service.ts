@@ -44,6 +44,17 @@ export class AssignmentsService {
     )
   }
 
+  getEtudiantsParMatiere(idMatiere:string): Observable<any[]> {
+    return this.http.get<any>(`${this.uri}/matieres/${idMatiere}/etudiants`).pipe(
+      map((data: any) => {
+        return data;
+      }),
+      tap((response: any) => {
+        this._etudiants.next(response);
+      })
+    )
+  }
+
   getEtudiants(): Observable<any[]> {
     return this.http.get<any>(`${this.uri}/users`).pipe(
       map((data: any) => {
