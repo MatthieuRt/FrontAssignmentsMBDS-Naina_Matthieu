@@ -152,6 +152,10 @@ export class UtilisateurService {
     const url = this.uri_matiere + "matiere/" + idMatiere;
     return this.http.get<any>(url);
   }
+  getListEtudiants(): Observable<any>{
+    const url = this.uri_matiere + "eleves";
+    return this.http.get<any>(url);
+  }
   private handleError<T>(operation: any, result?: T) {
     return (error: any): Observable<T> => {
       console.log(error); // pour afficher dans la console
