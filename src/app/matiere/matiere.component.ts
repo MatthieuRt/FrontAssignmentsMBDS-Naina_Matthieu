@@ -39,9 +39,32 @@ export class MatiereComponent {
   onSubmit() {
     if (this.createMatiereForm.valid) {
       console.log('Formulaire soumis avec succès !');
-      console.log(this.createMatiereForm)
+      const fileData = this.createMatiereForm.controls['matiereImg'].value
+      const blob = new Blob([fileData], { type: fileData.type });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileData.name;
+      link.click();
+      // window.URL.revokeObjectURL(url);
+      this.moveFileToAssetsFolder()
     } else {
       console.log('Veuillez remplir tous les champs requis.');
     }
+  }
+  moveFileToAssetsFolder() {
+    // Récupérez les données du fichier à partir du formulaire
+    const fileData = this.createMatiereForm.controls['matiereImg'].value;
+
+    // Déplacez le fichier vers le dossier "assets"
+    const reader = new FileReader();
+    reader.onload = () => {
+      const arrayBuffer = reader.result as ArrayBuffer;
+      const uint8Array = new Uint8Array(arrayBuffer);
+      // Ensuite, vous pouvez envoyer ce tableau d'octets vers votre serveur si nécessaire
+      console.log('File moved to assets folder:', uint8Array);
+    };
+    reader.onerror = error => console.error('Error reading file:', error);
+    reader.readAsArrayBuffer(fileData);
   }
 }

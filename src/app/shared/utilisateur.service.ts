@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, map, switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, forkJoin, from, of, throwError } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, take, tap } from 'rxjs/operators';
 import { Matiere } from '../student-user/matiere.model';
 import { Assignment } from '../student-user/assignment.model';
 @Injectable({
@@ -94,25 +94,59 @@ export class UtilisateurService {
     );
   }
   getAssignmentByIdStudent(page: number, limit: number): Observable<any> {
-    // let idEtudiant =  sessionStorage.getItem("idEtudiant");
     let idEtudiant = "663a52b9946fa30b7711db7d";
-    const url = this.uri + "/assignments/" + idEtudiant + "?page=" + page + "&limit=" + limit
+    const matiereList: any = [];
+    const matiereSet = new Set<string>(); // Utilisation d'un ensemble pour suivre les matières demandées
+    let count = 0;
+    const url = `${this.uri}/assignments/${idEtudiant}?page=${page}&limit=${limit}`;
+  
     return this.http.get<any>(url).pipe(
-      map((response: any) => {
-        let listAssignment = response.docs
-        let reponse = response;
-        response.docs.forEach(async (assignment: any) => {
-          await this.getMatiereById(assignment.idMatiere).subscribe(matiereResponse => {
-            assignment.matiere = matiereResponse.Matiere
-            assignment.matiere_img = matiereResponse.image
-            assignment.prof_img = matiereResponse.prof_img
-            assignment.prof_id = matiereResponse.professeur_id
+      mergeMap((response: any) => {
+        const listAssignment = response.docs;
+        const reponse = response;
+  
+        const assignmentPromises = listAssignment.map(async (assignment: any) => {
+          let matiereIN = matiereList.find((mat: any) => mat._id === assignment.idMatiere);
+  
+          if (!matiereIN && !matiereSet.has(assignment.idMatiere)) {
+            count += 1;
+            console.log("Appel à getMatiereById : " + count);
+            matiereSet.add(assignment.idMatiere); // Ajout de l'ID de la matière à l'ensemble
+  
+            const matiereResponse :any= await this.getMatiereById(assignment.idMatiere).toPromise();
+  
+            // On s'assure qu'il n'y a pas de doublons après avoir récupéré la réponse
+            if (!matiereList.some((mat: any) => mat._id === matiereResponse._id)) {
+              matiereList.push(matiereResponse);
+              console.log("Ajouté à matiereList :", matiereResponse);
+            } else {
+              console.log("Doublon détecté et évité :", matiereResponse);
+            }
+  
+            assignment.matiere = matiereResponse.Matiere;
+            assignment.matiere_img = matiereResponse.image;
+            assignment.prof_img = matiereResponse.prof_img;
+            assignment.prof_id = matiereResponse.professeur_id;
+          } else if (matiereIN) {
+            assignment.matiere = matiereIN.Matiere;
+            assignment.matiere_img = matiereIN.image;
+            assignment.prof_img = matiereIN.prof_img;
+            assignment.prof_id = matiereIN.professeur_id;
+          }
+  
+          return assignment;
+        });
+  
+        // Utilisation de Promise.all pour attendre toutes les promesses des assignments
+        return from(Promise.all(assignmentPromises)).pipe(
+          map((updatedAssignments) => {
+            reponse.docs = updatedAssignments;
+            console.log("Final matiereList :", matiereList); // Vérification qu'on ait pas de doublons de matiere List c'est à dire qu'on a seulement appeler getMatiereById si la matière n'est pas encore presente
+            return reponse;
           })
-        })
-        reponse.docs = listAssignment
-        return reponse
+        );
       })
-    )
+    );
   }
   getMatiereById(idMatiere: string): Observable<Matiere> {
     const url = this.uri_matiere + "matiere/" + idMatiere;
