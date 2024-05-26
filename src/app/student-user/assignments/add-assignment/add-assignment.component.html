@@ -3,37 +3,82 @@
 </h2>
 <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 md:col-span-12 lg:col-span-12">
-        <mat-stepper [linear]="isLinear" #stepper>
+        <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
             <mat-step [stepControl]="firstFormGroup">
                 <form [formGroup]="firstFormGroup">
-                    <ng-template matStepLabel>Fill out your name</ng-template>
+                    <ng-template matStepLabel>Titre</ng-template>
                     <mat-form-field>
-                        <mat-label>Name</mat-label>
-                        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                        <mat-label>Titre</mat-label>
+                        <input matInput placeholder="Ecrivez le titre ici..." formControlName="firstCtrl" required>
                     </mat-form-field>
                     <div>
-                        <button mat-button matStepperNext>Next</button>
+                        <button mat-button matStepperNext (click)="loadMatieres()">Suivant</button>
                     </div>
                 </form>
             </mat-step>
-            <mat-step [stepControl]="secondFormGroup" label="Fill out your address">
+            <mat-step [stepControl]="secondFormGroup" label="Matière et date de rendu">
+
                 <form [formGroup]="secondFormGroup">
+                    <div>
+                        <mat-form-field>
+                            <input type="text" placeholder="Matière" aria-label="Number" matInput
+                                [formControl]="myControl" [matAutocomplete]="auto">
+                            <mat-autocomplete #auto="matAutocomplete">
+                                @for (option of filteredOptions | async; track option) {
+                                <mat-option [value]="option">{{option}}</mat-option>
+                                }
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field>
+                            <mat-label>Date de rendu</mat-label>
+                            <input matInput formControlName="secondCtrl" type="date"
+                                placeholder="Ecrivez la date de rendu ici..." required>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <button mat-button matStepperPrevious>Retour</button>
+                        <button mat-button matStepperNext>Suivant</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="thirdFormGroup" label="Instruction">
+                <form [formGroup]="thirdFormGroup">
                     <mat-form-field>
-                        <mat-label>Address</mat-label>
-                        <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY" required>
+                        <mat-label>Instruction</mat-label>
+                        <input matInput formControlName="thirdCtrl"
+                            placeholder="Ecrivez les Instructions de l'assignement ici..." required>
                     </mat-form-field>
                     <div>
-                        <button mat-button matStepperPrevious>Back</button>
-                        <button mat-button matStepperNext>Next</button>
+                        <button mat-button matStepperPrevious>Retour</button>
+                        <button mat-button matStepperNext>Suivant</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="fourthFormGroup" label="Eleves">
+                <form [formGroup]="fourthFormGroup">
+                    <mat-form-field>
+                        <mat-label>Eleves</mat-label>
+                        <mat-select formControlName="fourthCtrl" multiple>
+                          @for (etudiant of listeEtudiants; track etudiant) {
+                            <mat-option [value]="etudiant._id">{{etudiant.nom}}</mat-option>
+                          }
+                        </mat-select>
+                      </mat-form-field>
+                    <div>
+                        <button mat-button matStepperPrevious>Retour</button>
+                        <button mat-button matStepperNext>Suivant</button>
                     </div>
                 </form>
             </mat-step>
             <mat-step>
-                <ng-template matStepLabel>Done</ng-template>
-                <p>You are now done.</p>
+                <ng-template matStepLabel>Terminer</ng-template>
+                <p>Cliquez sur enregistrer pour sauvegarder les informatons</p>
                 <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button (click)="stepper.reset()">Reset</button>
+                    <button mat-button matStepperPrevious>Retour</button>
+                    <button mat-button (click)="stepper.reset()">Enregistrer</button>
                 </div>
             </mat-step>
         </mat-stepper>
