@@ -98,14 +98,14 @@ export class AssignmentsService {
   };
 
   // ajoute un assignment et retourne une confirmation
-  addAssignment(assignment: Assignment): Observable<any> {
+  addAssignment(assignment: any): Observable<any> {
     //this.assignments.push(assignment);
     this.logService.log(assignment.nom, "ajouté");
     //return of("Assignment ajouté avec succès");
-    return this.http.post<Assignment>(this.uri, assignment);
+    return this.http.post(`${this.uri}/assignments`, assignment);
   }
 
-  updateAssignment(assignment: Assignment): Observable<any> {
+  updateAssignment(assignment: any): Observable<any> {
     // l'assignment passé en paramètre est le même objet que dans le tableau
     // plus tard on verra comment faire avec une base de données
     // il faudra faire une requête HTTP pour envoyer l'objet modifié

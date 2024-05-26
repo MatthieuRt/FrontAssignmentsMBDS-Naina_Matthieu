@@ -21,11 +21,11 @@
                 <form [formGroup]="secondFormGroup">
                     <div>
                         <mat-form-field>
-                            <input type="text" placeholder="Matière" aria-label="Number" matInput
+                            <input type="text" placeholder="Matière" formControlName="secondCtrl0" aria-label="Number" matInput
                                 [formControl]="myControl" [matAutocomplete]="auto">
                             <mat-autocomplete #auto="matAutocomplete">
                                 @for (option of filteredOptions | async; track option) {
-                                <mat-option [value]="option">{{option}}</mat-option>
+                                <mat-option [value]="option.Matiere">{{option.Matiere}}</mat-option>
                                 }
                             </mat-autocomplete>
                         </mat-form-field>
@@ -33,7 +33,7 @@
                     <div>
                         <mat-form-field>
                             <mat-label>Date de rendu</mat-label>
-                            <input matInput formControlName="secondCtrl" type="date"
+                            <input matInput formControlName="secondCtrl1" type="date"
                                 placeholder="Ecrivez la date de rendu ici..." required>
                         </mat-form-field>
                     </div>
@@ -78,7 +78,7 @@
                 <p>Cliquez sur enregistrer pour sauvegarder les informatons</p>
                 <div>
                     <button mat-button matStepperPrevious>Retour</button>
-                    <button mat-button (click)="stepper.reset()">Enregistrer</button>
+                    <button mat-button (click)="enregistrer()">Enregistrer</button>
                 </div>
             </mat-step>
         </mat-stepper>
