@@ -26,56 +26,70 @@ import { UtilisateurService } from '../shared/utilisateur.service';
   templateUrl: './matiere.component.html',
   styleUrl: './matiere.component.css'
 })
-export class MatiereComponent implements OnInit{
-  validators = [FileInputValidators.accept("image/*"),Validators.required];
+export class MatiereComponent implements OnInit {
+  validators = [FileInputValidators.accept("image/*"), Validators.required];
   matiereImg = new FormControl<any>(null, this.validators);
+  professeurImg = new FormControl<any>(null, this.validators);
   eleves = new FormControl('');
 
   toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
-  listEtudiant :any;
+  listEtudiant: any;
   createMatiereForm: FormGroup = this.formBuilder.group({
     nomMatiere: ['', Validators.required],
-    matiereImg : this.matiereImg,
-    etudiants : [this.eleves,Validators.required]
+    matiereImg: this.matiereImg,
+    etudiants: [this.eleves, Validators.required],
+    professeur_img: this.professeurImg
   });;
 
-  constructor(private formBuilder: FormBuilder,private imgServ : ImageService,
-              private userServ : UtilisateurService
+  constructor(private formBuilder: FormBuilder, private imgServ: ImageService,
+    private userServ: UtilisateurService
   ) {
   }
   ngOnInit(): void {
-    this.userServ.getListEtudiants().subscribe((response:any)=>{
+    this.userServ.getListEtudiants().subscribe((response: any) => {
       this.listEtudiant = response
     })
   }
-  clear() {
-    console.log(this.matiereImg.value)
-    this.matiereImg.setValue(null);
+  clear(form: string) {
+    if (form == 'matiereImg') {
+      console.log(this.matiereImg.value)
+      this.matiereImg.setValue(null);
+    }else{
+      this.professeurImg.setValue(null);
+    }
   }
   onSubmit() {
     if (this.createMatiereForm.valid && this.eleves.valid) {
       console.log('Formulaire soumis avec succès !');
-      let listEtudiantTemp : any = this.eleves.value
-      const listEleveToAssign = listEtudiantTemp.map((idEtudiant :string) => idEtudiant.split('_')[0]);
-      const fileData = this.createMatiereForm.controls['matiereImg'].value
-      this.imgServ.convertFileToBase64(fileData)
-      .then(base64String => {
-        const base64Image = 'data:' + fileData.type + ';base64,' + base64String;
-        const data = {
-          nom : this.createMatiereForm.value.nomMatiere,
-          toAssign : listEleveToAssign,
-          matiere_img : base64Image
-        }
-        console.log(data)
-      }).catch(error => {
-        console.error('Erreur lors de la conversion du fichier:', error);
-      });
+      let listEtudiantTemp: any = this.eleves.value
+      const listEleveToAssign = listEtudiantTemp.map((idEtudiant: string) => idEtudiant.split('_')[0]);
+      const fileDataMatiere = this.createMatiereForm.controls['matiereImg'].value
+      const fileDataProf = this.createMatiereForm.controls['professeur_img'].value
+      this.imgServ.convertFileToBase64(fileDataMatiere)
+        .then(base64Matiere => {
+          const base64Image_Matiere = 'data:' + fileDataMatiere.type + ';base64,' + base64Matiere;
+          this.imgServ.convertFileToBase64(fileDataProf).then(base64Prof => {
+            const base64Image_Prof = 'data:' + fileDataMatiere.type + ';base64,' + base64Prof;
+            const data = {
+              nom: this.createMatiereForm.value.nomMatiere,
+              toAssign: listEleveToAssign,
+              matiere_img: base64Image_Matiere,
+              // professeur_id : localStorage.getItem('user').id,
+              prof_img : base64Image_Prof
+            }
+            console.log(data)
+          }).catch(erreur=>{
+            console.error('Erreur lors de la conversion du fichier du professeur:', erreur);
+          })
+        }).catch(error => {
+          console.error('Erreur lors de la conversion du fichier de la matiere:', error);
+        });
     } else {
       console.log('Veuillez remplir tous les champs requis.');
     }
   }
- 
-  affiche(chaine : string | undefined){
-    return (chaine)  ? chaine.split("_")[1] : ''
+
+  affiche(chaine: string | undefined) {
+    return (chaine) ? chaine.split("_")[1] : ''
   }
 }

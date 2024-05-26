@@ -39,7 +39,7 @@
             <ngx-mat-dropzone>
               <input type="file" fileInput [formControl]="matiereImg" />
               @if (matiereImg.value) {
-              <mat-chip-row (removed)="clear()">
+              <mat-chip-row (removed)="clear('matiereImg')">
                 {{ matiereImg.value?.name }}
                 <button matChipRemove>
                   <mat-icon>cancel</mat-icon>
@@ -48,6 +48,22 @@
               }
             </ngx-mat-dropzone>
             <mat-icon matSuffix color="primary">cloud_upload</mat-icon>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="taille">
+            <mat-label>Choisir ici l'image du profil qui vous représentera!</mat-label>
+            <ngx-mat-dropzone>
+              <input type="file" fileInput [formControl]="professeurImg" />
+              @if (professeurImg.value) {
+              <mat-chip-row (removed)="clear('professeurImg')">
+                {{ professeurImg.value?.name }}
+                <button matChipRemove>
+                  <mat-icon matSuffix color="primary">cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              }
+            </ngx-mat-dropzone>
+            <mat-icon matSuffix color="primary">face</mat-icon>
           </mat-form-field>
           <br>
           <button mat-fab extended color="accent" type="submit">
