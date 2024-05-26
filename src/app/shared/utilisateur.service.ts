@@ -106,6 +106,7 @@ export class UtilisateurService {
             assignment.matiere = matiereResponse.Matiere
             assignment.matiere_img = matiereResponse.image
             assignment.prof_img = matiereResponse.prof_img
+            assignment.prof_id = matiereResponse.professeur_id
           })
         })
         reponse.docs = listAssignment

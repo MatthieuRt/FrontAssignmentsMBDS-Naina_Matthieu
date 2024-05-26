@@ -11,6 +11,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { DetailAssignmentModalComponent } from './detail-assignment-modal/detail-assignment-modal.component';
 
 @Component({
   selector: 'app-assignments',
@@ -28,7 +33,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatIconModule
+    MatIconModule,
+
   ],
   templateUrl: './assignments.component.html',
   styleUrl: './assignments.component.css'
@@ -45,7 +51,7 @@ export class AssignmentsComponent implements OnInit {
   listAssignments: any;
   filtreControl = new FormControl('');
   resetList :any;
-  constructor(private userServ: UtilisateurService,private _changeDetectorRef: ChangeDetectorRef) { }
+  constructor(private userServ: UtilisateurService,private _changeDetectorRef: ChangeDetectorRef,public dialog: MatDialog) { }
   ngOnInit() {
     this.getAssignmentsFromService();
     this.filtreControl.valueChanges.subscribe(value => {
@@ -133,5 +139,15 @@ export class AssignmentsComponent implements OnInit {
   reset(){
     this.listAssignments = this.resetList
     this._changeDetectorRef.detectChanges();
+  }
+  openDialog(idAssignment:string) {
+    const assign = this.listAssignments.find((assignment: any) => assignment._id == idAssignment);
+    console.log(assign)
+    console.log("____________________________")
+    this.dialog.open(DetailAssignmentModalComponent, {
+      data: {
+        assignment: assign,
+      },
+    });
   }
 }

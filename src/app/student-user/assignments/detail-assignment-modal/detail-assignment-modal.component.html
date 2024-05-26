@@ -1,0 +1,67 @@
+<div class="flex items-start min-width">
+    <div class="w-20 h-20 image-fit" style="margin-left: 12%;">
+        <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/{{ data.assignment.matiere_img }}">
+    </div>
+    <div class="lg:ml-4 text-center lg:text-left mt-3 lg:mt-0 surround-title">
+        <div class="title">
+            <h1>{{data.assignment.matiere}}</h1>
+        </div>
+    </div>
+</div>
+
+<mat-dialog-content style="max-width: 600px;">
+    <div class="flex justify-between">
+        <div class="left">
+            <strong>Nom du devoir : </strong>{{data.assignment.nom}}
+            <div class="text-slate-500 mt-1">
+                <strong>A rendre le : </strong>
+                {{data.assignment.dateDeRendu | date}}
+            </div>
+        </div>
+        <div class="right">
+            <strong>Professeur responsable : </strong>
+            <div class="flex items-center ml-5">
+                <div class="w-10 h-10 image-fit">
+                    <img alt="Image de la matière" class="rounded-full"
+                        src="assets/dist/images/{{ data.assignment.matiere_img }}">
+                </div>
+                <div class="ml-3">
+                    <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">{{professeur?.nom}}
+                    </div>
+                    <div class="text-slate-500">{{professeur?.email}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <h3>Instruction : </h3>
+    <p>{{data.assignment.instruction}}</p>
+    @if(!data.assignment.rendu){
+    <div class="bg-danger/20 text-danger rounded px-2 mt-1.5" style="color:red">
+        <label>Vous n'avez pas encore rendu ce devoir</label>
+        <mat-icon>not_interested</mat-icon>
+    </div>
+    }
+    @else{
+    <div class="bg-success/20 text-success rounded px-2 mt-1.5" style="color:#90EE90">
+        <label>rendu</label>
+        <mat-icon>done</mat-icon>
+    </div>
+    <div class="flex items-center">
+        <h3>Votre note : </h3>
+        @if(data.assignment.remarques != null){
+            @if(data.assignment.note < 10){
+                <strong style="color: red;"> {{data.assignment.note}} sur 20</strong>
+            }@else {
+                <strong style="color:#90EE90"> {{data.assignment.note}} sur 20</strong>
+            }
+        }@else {
+            <strong>Le professeur n'a pas encore noté ce devoir</strong>
+        }
+    </div>
+    }
+    
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

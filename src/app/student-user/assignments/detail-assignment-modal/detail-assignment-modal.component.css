@@ -1,0 +1,51 @@
+.min-width {
+    min-width: 500px;
+    max-width: 600px;
+}
+.title{
+    text-align: center;
+    margin-top: 3%;
+}
+.surround-title{
+  margin: 2%;
+  width: 85%;
+}
+.flex {
+    display: flex;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.px-20 {
+    padding-left: 5rem; /* 80px */
+    padding-right: 5rem; /* 80px */
+}
+
+.pt-25 {
+    padding-top: 6.25rem; /* 100px */
+}
+
+.ml-12 {
+    margin-left: 3rem; /* 48px */
+}
+
+.left {
+    flex: 1 1 40%;
+    padding: 10px;
+}
+
+.right {
+    flex: 1 1 60%;
+    padding: 10px;
+    
+}
+
+.ml-5 {
+    margin-left: 1.25rem; /* Ajustement de la marge gauche */
+}
+
+.ml-3 {
+    margin-left: 0.75rem; /* Ajustement la marge gauche */
+}
