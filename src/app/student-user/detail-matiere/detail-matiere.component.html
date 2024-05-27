@@ -178,7 +178,7 @@
                     <div class="relative flex items-center" cdkDrag>
                         <div class="w-12 h-12 flex-none image-fit">
                             <img alt="Midone - HTML Admin Template" class="rounded-full"
-                                src="assets/dist/images/profile-11.jpg">
+                                src="assets/dist/images/{{ matiere.prof_img }}">
                         </div>
                         <div class="ml-4 mr-auto">
                             <label class="font-medium">{{devoir.nom}}</label>
@@ -200,8 +200,11 @@
                             data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
                                 class="w-5 h-5 text-slate-500"></i> </a>
                     </div>
-                    <button class="btn hidden sm:flex text-center" style="background-color: #90EE90;"> <i
-                            data-lucide="file" class="w-4 h-4 mr-2"></i> Rendre </button>
+                    @if (listToRender.length>0) {
+                       <button class="btn hidden sm:flex text-center" (click)="rendreOneOrManyAssignment()"
+                       style="background-color: #90EE90;"> <i
+                            data-lucide="file" class="w-4 h-4 mr-2"></i> Rendre </button> 
+                    }
                 </div>
                 <div class="p-5" #inactiveList="cdkDropList" cdkDropList cdkDropListOrientation="horizontal"
                     [cdkDropListData]="listToRender" [cdkDropListConnectedTo]="[activeList]"

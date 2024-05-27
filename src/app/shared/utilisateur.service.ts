@@ -76,6 +76,7 @@ export class UtilisateurService {
     let idEtudiant = "663a52b9946fa30b7711db7d";
     // const url = this.uri + "/assignments/663a52b9946fa30b7711db7d/66433f5b0c3e8e917d4e9a6a"
     const url = this.uri + "users/assignments/" + idEtudiant + "/" + idMatiere;
+    this._assignmentStudent.next(null);
     console.log(url)
     return this.http.get<any>(url).pipe(
       map((reponse) => {

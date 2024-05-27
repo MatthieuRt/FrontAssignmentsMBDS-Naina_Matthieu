@@ -8,6 +8,9 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { Assignment } from '../assignment.model';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { response } from 'express';
 @Component({
   selector: 'app-detail-matiere',
   standalone: true,
@@ -27,27 +30,30 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
   listAssignment: any[] = [];
   listAssignmentNonRendu: any[] = [];
   listToRender: any[] = [];
-  totalNonRendu : number = 0;
-  totalAssignment : number = 0;
-  professeur:any;
+  totalNonRendu: number = 0;
+  totalAssignment: number = 0;
+  professeur: any;
 
   selectedAssignment: Assignment | undefined;
 
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(private userServ: UtilisateurService, private router: Router,
-    private _changeDetectorRef: ChangeDetectorRef,) {
+    private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog) {
   }
   ngOnInit(): void {
     console.log("Appel  de DetailMatiereComponent ")
     this.userServ.matiere$.pipe(takeUntil(this._unsubscribeAll))
       .subscribe((response) => {
         this.matiere = response;
-        this.userServ.getUserById(this.matiere.professeur_id).subscribe((resp)=>{
+        this.userServ.getUserById(this.matiere.professeur_id).subscribe((resp) => {
           this.professeur = resp
           console.log(this.professeur)
         })
       })
+      this.getAssignmentsEtudiantsFromService();
+  }
+  getAssignmentsEtudiantsFromService() {
     this.userServ.assignmentStudent$.pipe(takeUntil(this._unsubscribeAll))
       .subscribe((response: any) => {
         if (response != null && response != undefined) {
@@ -61,7 +67,7 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
           this.totalNonRendu = this.listAssignmentNonRendu.length
           console.log(this.listAssignment)
         }
-
+        this._changeDetectorRef.detectChanges();
       })
   }
   /**
@@ -116,5 +122,39 @@ export class DetailMatiereComponent implements OnInit, OnDestroy {
   }
   resetSelectedAssignment() {
     this.selectedAssignment = undefined;
+  }
+  rendreOneOrManyAssignment() {
+    const ids_assignments = this.listToRender.map(assignment => assignment._id);
+    // console.log(ids_assignments)
+    this.userServ.rendreAssignments(ids_assignments).subscribe((response: any) => {
+      this.userServ.getAssignmentByIdStudent_IdMatiere(this.matiere._id)
+      .subscribe((response: any) => {
+        if (response != null && response != undefined) {
+          this.listAssignment = response.docs;
+          this.totalAssignment = this.listAssignment.length
+          this.listAssignment.forEach((devoir: any) => {
+            if (!devoir.rendu) {
+              this.listAssignmentNonRendu.push(devoir)
+            }
+          })
+          this.totalNonRendu = this.listAssignmentNonRendu.length
+          console.log(this.listAssignment)
+        }
+        this.openDialog(response.n)
+        this._changeDetectorRef.detectChanges();
+      })
+    })
+  }
+
+  openDialog(nbRender: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        nbAssignmentRendu: nbRender,
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.listToRender = []
+    });
   }
 }
