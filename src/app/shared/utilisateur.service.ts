@@ -8,8 +8,7 @@ import { Assignment } from '../student-user/assignment.model';
   providedIn: 'root'
 })
 export class UtilisateurService {
-  uri = "http://localhost:8010/api/users";
-  uri_matiere = "http://localhost:8010/api/";
+  uri = "http://localhost:8010/api/";
   private _user: BehaviorSubject<any | null> = new BehaviorSubject(null);
   private _listMatieres: BehaviorSubject<Matiere[] | null> = new BehaviorSubject<Matiere[] | null>(null);
   private _matiere: BehaviorSubject<Matiere | null> = new BehaviorSubject<Matiere | null>(null);
@@ -27,7 +26,7 @@ export class UtilisateurService {
   }
 
   getUserById(id: string): Observable<any> {
-    const url = this.uri + "/" + id
+    const url = this.uri + "users/" + id
     return this.http.get<any>(url).pipe(
       take(1),
       map((reponse) => {
@@ -45,7 +44,7 @@ export class UtilisateurService {
     );
   }
   getMatieresByIduser(id: string): Observable<any> {
-    const url = this.uri + "/matiere/" + id
+    const url = this.uri + "users/matiere/" + id
     console.log(url)
     return this.http.get<any>(url).pipe(
       map((reponse) => {
@@ -76,7 +75,7 @@ export class UtilisateurService {
     // let idEtudiant =  sessionStorage.getItem("idEtudiant");
     let idEtudiant = "663a52b9946fa30b7711db7d";
     // const url = this.uri + "/assignments/663a52b9946fa30b7711db7d/66433f5b0c3e8e917d4e9a6a"
-    const url = this.uri + "/assignments/" + idEtudiant + "/" + idMatiere;
+    const url = this.uri + "users/assignments/" + idEtudiant + "/" + idMatiere;
     console.log(url)
     return this.http.get<any>(url).pipe(
       map((reponse) => {
@@ -98,7 +97,7 @@ export class UtilisateurService {
     const matiereList: any = [];
     const matiereSet = new Set<string>(); // Utilisation d'un ensemble pour suivre les matières demandées
     let count = 0;
-    const url = `${this.uri}/assignments/${idEtudiant}?page=${page}&limit=${limit}`;
+    const url = `${this.uri}users/assignments/${idEtudiant}?page=${page}&limit=${limit}`;
   
     return this.http.get<any>(url).pipe(
       mergeMap((response: any) => {
@@ -149,12 +148,19 @@ export class UtilisateurService {
     );
   }
   getMatiereById(idMatiere: string): Observable<Matiere> {
-    const url = this.uri_matiere + "matiere/" + idMatiere;
+    const url = this.uri + "matiere/" + idMatiere;
     return this.http.get<any>(url);
   }
   getListEtudiants(): Observable<any>{
-    const url = this.uri_matiere + "eleves";
+    const url = this.uri + "eleves";
     return this.http.get<any>(url);
+  }
+  rendreAssignments(assignments:any): Observable<any>{
+    const url = `${this.uri}user/rendre`;
+    const data = {
+      listAssignment : assignments
+    }
+    return this.http.post<any>(url,data);
   }
   private handleError<T>(operation: any, result?: T) {
     return (error: any): Observable<T> => {
