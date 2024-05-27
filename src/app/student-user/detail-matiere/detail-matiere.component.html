@@ -26,7 +26,7 @@
         </div>
         <div class="flex flex-1 px-5 items-center justify-center lg:justify-start">
             <div class="w-20 h-20 sm:w-24 sm:h-24 flex-none lg:w-32 lg:h-32 image-fit relative">
-                <img  class="rounded-full" src="assets/dist/images/{{ matiere.prof_img }}">
+                <img class="rounded-full" src="assets/dist/images/{{ matiere.prof_img }}">
                 <div
                     class="absolute mb-1 mr-1 flex items-center justify-center bottom-0 right-0 bg-primary rounded-full p-2">
                     <i class="w-4 h-4 text-white" data-lucide="camera"></i>
@@ -120,40 +120,49 @@
                             <div>
                                 <div class="flex">
                                     <div class="mr-auto">
-                                        <p><strong>Devoir :</strong><p>{{selectedAssignment.nom}}</p>
-                                        <p><strong>Instruction:</strong><p>
+                                        <p><strong>Devoir :</strong>
+                                        <p>{{selectedAssignment.nom}}</p>
+                                        <p><strong>Instruction:</strong>
+                                        <p>
                                         <p> {{ selectedAssignment.instruction }}</p>
-                                        <p><strong>Date de rendu:</strong> {{ selectedAssignment.dateDeRendu | date:'mediumDate' }}</p>
+                                        <p><strong>Date de rendu:</strong> {{ selectedAssignment.dateDeRendu |
+                                            date:'mediumDate' }}</p>
                                         <br>
                                         @if(selectedAssignment.rendu){
-                                            <p><strong>Note:</strong> {{ selectedAssignment.note}}/20</p>
-                                            <p><strong style="color:#ff000c ">Remarques:</strong><p>
-                                            <p> {{ selectedAssignment.remarques}}</p>
- 
+                                        <p><strong>Note:</strong> {{ selectedAssignment.note}}/20</p>
+                                        <p><strong style="color:#ff000c ">Remarques:</strong>
+                                        <p>
+                                        <p> {{ selectedAssignment.remarques}}</p>
+
                                         }@else {
-                                            <p><strong>Ce devoir n'a pas encore été rendu. Veuillez le rendre pour voir la note et les remarques</strong></p>
+                                        <p><strong>Ce devoir n'a pas encore été rendu. Veuillez le rendre pour voir la
+                                                note et les remarques</strong></p>
                                         }
-                                        
+
                                     </div>
                                 </div>
                                 <div class="progress h-1 mt-2">
-                                    <div class="progress-bar w-2/2"  [ngStyle]="{'background-color' : selectedAssignment.rendu ? 'green' : '#ff000c' }" role="progressbar" aria-valuenow="0"
-                                        aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <button (click)="resetSelectedAssignment()" class="btn btn-secondary block w-40 mx-auto mt-5"><mat-icon style="color: #6a6a28;">restore</mat-icon></button>
-                            </div>
-                            }@else {
-                                <div>
-                                    <div class="flex">
-                                        <div class="mr-auto">Selectionner d'abord un devoir !</div>
+                                    <div class="progress-bar w-2/2"
+                                        [ngStyle]="{'background-color' : selectedAssignment.rendu ? 'green' : '#ff000c' }"
+                                        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                     </div>
                                 </div>
+                                <button (click)="resetSelectedAssignment()"
+                                    class="btn btn-secondary block w-40 mx-auto mt-5"><mat-icon
+                                        style="color: #6a6a28;">restore</mat-icon></button>
+                            </div>
+                            }@else {
+                            <div>
+                                <div class="flex">
+                                    <div class="mr-auto">Selectionner d'abord un devoir !</div>
+                                </div>
+                            </div>
                             }
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- END: Work In Progress -->
+            <!-- END: RENDRE un ou plusieurs devoirs -->
             <!-- BEGIN: Devoir non Rendu -->
             <div class="intro-y box col-span-12 lg:col-span-6">
                 <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -179,7 +188,7 @@
                     }
                 </div>
             </div>
-            <!-- END: Daily Sales -->
+            <!-- END: Devoir non Rendu  -->
             <!-- BEGIN: Rendre un ou plusieurs devoirs-->
             <div class="intro-y box col-span-12 lg:col-span-6">
                 <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -194,15 +203,15 @@
                     <button class="btn hidden sm:flex text-center" style="background-color: #90EE90;"> <i
                             data-lucide="file" class="w-4 h-4 mr-2"></i> Rendre </button>
                 </div>
-                <div class="p-5" #inactiveList="cdkDropList" cdkDropList cdkDropListOrientation="vertical"
+                <div class="p-5" #inactiveList="cdkDropList" cdkDropList cdkDropListOrientation="horizontal"
                     [cdkDropListData]="listToRender" [cdkDropListConnectedTo]="[activeList]"
                     (cdkDropListDropped)="drop($event)">
                     <div class="tab-content">
                         <div id="latest-tasks-new" class="tab-pane active" role="tabpanel"
                             aria-labelledby="latest-tasks-new-tab">
+                            @if(listToRender.length>0){
+                            @for(torender of listToRender;track torender.id){
                             <div class="flex items-center">
-                                @if(listToRender.length>0){
-                                @for(torender of listToRender;track torender.id){
                                 <div class="border-l-2 border-primary dark:border-primary pl-4" cdkDrag
                                     style="border-color:#ff000c">
                                     <div class="ml-4 mr-auto">
@@ -210,18 +219,17 @@
                                     </div>
                                 </div>
                                 <div class="form-check form-switch ml-auto">
-                                    <button mat-icon-button color="danger"
-                                        aria-label="Enlevé le devoir"
+                                    <button mat-icon-button color="danger" aria-label="Enlevé le devoir"
                                         (click)="enleverAssignmentToRender(torender)">
                                         <mat-icon style="color: #ff000c;">delete</mat-icon>
                                     </button>
                                 </div>
-                                }
-                                }@else {
-                                <p>Déplacez ici les devoirs</p>
-                                }
 
                             </div>
+                            }
+                            }@else {
+                            <p>Déplacez ici les devoirs</p>
+                            }
                         </div>
                     </div>
                 </div>
