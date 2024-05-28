@@ -4,4 +4,6 @@ export class Matiere {
     image?: String;
     professeur_id!: String;
     prof_img ?:String;
+    prof_name?: string;
+    prof_mail?: string;
 }

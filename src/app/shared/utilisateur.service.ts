@@ -44,23 +44,31 @@ export class UtilisateurService {
     );
   }
   getMatieresByIduser(id: string): Observable<any> {
-    const url = this.uri + "users/matiere/" + id
-    console.log(url)
-    return this.http.get<any>(url).pipe(
-      map((reponse) => {
-        this._listMatieres.next(reponse);
-        return reponse;
-      }),
-      switchMap((matieres) => {
+    const url = `${this.uri}users/matiere/${id}`;
+    console.log(url);
 
+    return this.http.get<any[]>(url).pipe(
+      switchMap(matieres => {
         if (!matieres) {
-          return throwError('Matière(s) introuvable pour l\' utilisateur avec l\'id => ' + id + '!');
+          return throwError(`Matière(s) introuvable pour l'utilisateur avec l'id => ${id} !`);
         }
 
-        return of(matieres);
-      })
+        return forkJoin(
+          matieres.map(matiere => 
+            this.getUserById(matiere.professeur_id).pipe(
+              map(prof => ({
+                ...matiere,
+                prof_name: prof.nom,
+                prof_mail: prof.email
+              }))
+            )
+          )
+        );
+      }),
+      tap(updatedMatieres => this._listMatieres.next(updatedMatieres))
     );
   }
+
   getMatiere(id: string | null): Observable<Matiere | null> {
     return this._listMatieres.pipe(
       take(1),
