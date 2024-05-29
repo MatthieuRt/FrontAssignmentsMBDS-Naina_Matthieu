@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { ImageService } from '../shared/image.service';
 import { MatSelectModule } from '@angular/material/select';
 import { UtilisateurService } from '../shared/utilisateur.service';
+import { MatiereService } from '../shared/matiere.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-matiere',
   standalone: true,
@@ -32,7 +34,6 @@ export class MatiereComponent implements OnInit {
   professeurImg = new FormControl<any>(null, this.validators);
   eleves = new FormControl('');
 
-  toppingList: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   listEtudiant: any;
   createMatiereForm: FormGroup = this.formBuilder.group({
     nomMatiere: ['', Validators.required],
@@ -42,7 +43,7 @@ export class MatiereComponent implements OnInit {
   });;
 
   constructor(private formBuilder: FormBuilder, private imgServ: ImageService,
-    private userServ: UtilisateurService
+    private userServ: UtilisateurService, private matiereServ: MatiereService
   ) {
   }
   ngOnInit(): void {
@@ -54,7 +55,7 @@ export class MatiereComponent implements OnInit {
     if (form == 'matiereImg') {
       console.log(this.matiereImg.value)
       this.matiereImg.setValue(null);
-    }else{
+    } else {
       this.professeurImg.setValue(null);
     }
   }
@@ -70,15 +71,30 @@ export class MatiereComponent implements OnInit {
           const base64Image_Matiere = 'data:' + fileDataMatiere.type + ';base64,' + base64Matiere;
           this.imgServ.convertFileToBase64(fileDataProf).then(base64Prof => {
             const base64Image_Prof = 'data:' + fileDataMatiere.type + ';base64,' + base64Prof;
+            const userItem = localStorage.getItem("USER");
+            let prof_id = ''
+            if (userItem) {
+              prof_id = JSON.parse(userItem)._id
+            }
             const data = {
               nom: this.createMatiereForm.value.nomMatiere,
               toAssign: listEleveToAssign,
               matiere_img: base64Image_Matiere,
-              // professeur_id : localStorage.getItem('user').id,
-              prof_img : base64Image_Prof
+              professeur_id: prof_id,
+              prof_img: base64Image_Prof
             }
             console.log(data)
-          }).catch(erreur=>{
+            this.matiereServ.insertMatiere(data).subscribe(
+              (res:any)=>{
+                Swal.fire({
+                  text: "Matière ajoutée avec succès!",
+                  icon: "success",
+                  showConfirmButton: false
+                });
+                window.location.reload();
+              }
+            )
+          }).catch(erreur => {
             console.error('Erreur lors de la conversion du fichier du professeur:', erreur);
           })
         }).catch(error => {
