@@ -36,7 +36,16 @@ export class LoginComponent {
     this.authService.logIn(this.email,this.password).subscribe(
       (response)=>{
         if(response){
-          this.router.navigate(['/'])
+          let userConnected = localStorage.getItem("USER")
+          if(userConnected){   
+            if(JSON.parse(userConnected).role=='eleve'){
+              this.router.navigate(['/student'])
+            }else if(JSON.parse(userConnected).role=='prof'){
+              this.router.navigate(['/dashboard'])
+            }else{
+              this.router.navigate(['/'])
+            }
+          }
         }
       },(error)=>{
         alert('Nom d utilisateur ou mdp erroné')
