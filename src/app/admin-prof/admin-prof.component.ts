@@ -148,7 +148,7 @@ export class AdminProfComponent {
         }
         return;
       }
-    });
+    })
     if (formValues) {
       let note = formValues[0];
       let remarques = formValues[1]
@@ -156,7 +156,10 @@ export class AdminProfComponent {
       let body = { assignments, note, remarques }
       this.assignmentService.noterAssignment(body).subscribe(
         (res:any)=>{
-          Swal.fire("Assignment(s) noté(s) avec succès !");
+          Swal.fire("Notation effectuée.");
+          window.location.reload();
+        },(error:any)=>{
+          console.log("error",error)
         }
       )
     }
