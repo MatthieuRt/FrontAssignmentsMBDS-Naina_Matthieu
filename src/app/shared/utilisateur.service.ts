@@ -186,7 +186,7 @@ export class UtilisateurService {
   
           if (!matiereIN && !matiereSet.has(assignment.idMatiere)) {
             count += 1;
-            console.log("Appel à getMatiereById : " + count);
+            console.log("(ALL ASIGN)Appel à getMatiereById : " + count);
             matiereSet.add(assignment.idMatiere); // Ajout de l'ID de la matière à l'ensemble
   
             const matiereResponse :any= await this.getMatiereById(assignment.idMatiere).toPromise();
@@ -194,9 +194,9 @@ export class UtilisateurService {
             // On s'assure qu'il n'y a pas de doublons après avoir récupéré la réponse
             if (!matiereList.some((mat: any) => mat._id === matiereResponse._id)) {
               matiereList.push(matiereResponse);
-              console.log("Ajouté à matiereList :", matiereResponse);
+              console.log("(ALL ASIGN) Ajouté à matiereList :", matiereResponse);
             } else {
-              console.log("Doublon détecté et évité :", matiereResponse);
+              console.log("(ALL ASIGN) Doublon détecté et évité :", matiereResponse);
             }
   
             assignment.matiere = matiereResponse.Matiere;
@@ -217,7 +217,7 @@ export class UtilisateurService {
         return from(Promise.all(assignmentPromises)).pipe(
           map((updatedAssignments) => {
             reponse.docs = updatedAssignments;
-            console.log("Final matiereList :", matiereList); // Vérification qu'on ait pas de doublons de matiere List c'est à dire qu'on a seulement appeler getMatiereById si la matière n'est pas encore presente
+            console.log("(ALL ASIGN)Final matiereList :", matiereList); // Vérification qu'on ait pas de doublons de matiere List c'est à dire qu'on a seulement appeler getMatiereById si la matière n'est pas encore presente
             return reponse;
           })
         );

@@ -52,74 +52,71 @@ export class AssignmentsComponent implements OnInit {
   listAssignments: any;
   filtreControl = new FormControl('');
   resetList: any;
-  user :any;
+  user: any;
   constructor(private userServ: UtilisateurService, private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog) { }
   ngOnInit() {
     const userstring: string | null = localStorage.getItem("USER");
     if (userstring) {
       this.user = JSON.parse(userstring);
-      if(this.user.role=="prof"){
-        this.getAllAssignmentsFromService();
-      }else{
-        this.getAssignmentsFromService();
-      }
+      this.getAssignmentsFromService();
       this.filtreControl.valueChanges.subscribe(value => {
         if (value != null) {
           this.handleFilterChange(value);
         }
       });
     }
-   
+
   }
   getAssignmentsFromService() {
-    this.userServ.getAssignmentByIdStudent(this.user._id,this.page, this.limit)
-      .subscribe((response: any) => {
-        // console.log(response)
-        this.listAssignments = response.docs;
-        this.resetList = this.listAssignments;
-        this.totalDocs = response.totalDocs;
-        this.totalPages = response.totalPages;
-        this.nextPage = response.nextPage;
-        this.prevPage = response.prevPage;
-        this.hasNextPage = response.hasNextPage;
-        this.hasPrevPage = response.hasPrevPage;
-        console.log('List of assignments:', this.listAssignments);
+    if (this.user.role == "prof") {
+      this.userServ.getAllAssignments(this.page, this.limit)
+        .subscribe((response: any) => {
+          console.log(response)
+          this.listAssignments = response.docs;
+          this.resetList = this.listAssignments;
+          this.totalDocs = response.totalDocs;
+          this.totalPages = response.totalPages;
+          this.nextPage = response.nextPage;
+          this.prevPage = response.prevPage;
+          this.hasNextPage = response.hasNextPage;
+          this.hasPrevPage = response.hasPrevPage;
+          console.log('List All of assignments:', this.listAssignments);
+        })
+    } else {
+      this.userServ.getAssignmentByIdStudent(this.user._id, this.page, this.limit)
+        .subscribe((response: any) => {
+          // console.log(response)
+          this.listAssignments = response.docs;
+          this.resetList = this.listAssignments;
+          this.totalDocs = response.totalDocs;
+          this.totalPages = response.totalPages;
+          this.nextPage = response.nextPage;
+          this.prevPage = response.prevPage;
+          this.hasNextPage = response.hasNextPage;
+          this.hasPrevPage = response.hasPrevPage;
+          console.log('List of assignments:', this.listAssignments);
 
-        // this.totalDocs = response.totalDocs;
-        // console.log('Total docs:', this.totalDocs);
+          // this.totalDocs = response.totalDocs;
+          // console.log('Total docs:', this.totalDocs);
 
-        // this.totalPages = response.totalPages;
-        // console.log('Total pages:', this.totalPages);
+          // this.totalPages = response.totalPages;
+          // console.log('Total pages:', this.totalPages);
 
-        // this.nextPage = response.nextPage;
-        // console.log('Next page:', this.nextPage);
+          // this.nextPage = response.nextPage;
+          // console.log('Next page:', this.nextPage);
 
-        // this.prevPage = response.prevPage;
-        // console.log('Previous page:', this.prevPage);
+          // this.prevPage = response.prevPage;
+          // console.log('Previous page:', this.prevPage);
 
-        // this.hasNextPage = response.hasNextPage;
-        // console.log('Has next page:', this.hasNextPage);
+          // this.hasNextPage = response.hasNextPage;
+          // console.log('Has next page:', this.hasNextPage);
 
-        // this.hasPrevPage = response.hasPrevPage;
-        // console.log('Has previous page:', this.hasPrevPage);
-      })
-
+          // this.hasPrevPage = response.hasPrevPage;
+          // console.log('Has previous page:', this.hasPrevPage);
+        })
+    }
   }
-  getAllAssignmentsFromService() {
-    this.userServ.getAllAssignments(this.page, this.limit)
-      .subscribe((response: any) => {
-        console.log(response)
-        this.listAssignments = response.docs;
-        this.resetList = this.listAssignments;
-        this.totalDocs = response.totalDocs;
-        this.totalPages = response.totalPages;
-        this.nextPage = response.nextPage;
-        this.prevPage = response.prevPage;
-        this.hasNextPage = response.hasNextPage;
-        this.hasPrevPage = response.hasPrevPage;
-        console.log('List All of assignments:', this.listAssignments);
-      })
-  }
+  
   pagePrecedente() {
     this.page = this.prevPage;
     this.getAssignmentsFromService();
@@ -143,7 +140,7 @@ export class AssignmentsComponent implements OnInit {
     this.page = event.pageIndex + 1;
     this.limit = event.pageSize;
     console.log("handlePageEvent/ limit = " + this.limit)
-    // this.getAssignmentsFromService();
+    this.getAssignmentsFromService();
   }
 
   handleFilterChange(value: string | null): void {
