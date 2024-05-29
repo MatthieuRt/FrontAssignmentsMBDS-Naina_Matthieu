@@ -49,7 +49,7 @@
                         <div class="flex flex-col sm:flex-row">
                             <div class="mr-auto" style="cursor: pointer;" (click)="selectAssignmentForDetail(devoir)">
                                 <label class="font-medium">{{devoir.nom}}</label>
-                                <div class="text-slate-500 mt-1">{{devoir.dateDeRendu}}</div>
+                                <div class="text-slate-500 mt-1">{{devoir.dateDeRendu |date}}</div>
                             </div>
                             <div class="flex">
                                 <div class="w-32 -ml-2 sm:ml-0 mt-5 mr-auto sm:mr-5">
