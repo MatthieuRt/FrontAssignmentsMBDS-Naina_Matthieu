@@ -53,6 +53,7 @@ export class AssignmentsComponent implements OnInit {
   filtreControl = new FormControl('');
   resetList: any;
   user: any;
+  title:string = 'Liste de vos assignments'
   constructor(private userServ: UtilisateurService, private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog) { }
   ngOnInit() {
     const userstring: string | null = localStorage.getItem("USER");
@@ -69,6 +70,7 @@ export class AssignmentsComponent implements OnInit {
   }
   getAssignmentsFromService() {
     if (this.user.role == "admin") {
+      this.title = "Liste de tous les assignments"
       this.userServ.getAllAssignments(this.page, this.limit)
         .subscribe((response: any) => {
           console.log(response)

@@ -1,8 +1,9 @@
 <h2 class="intro-y text-lg font-medium mt-10">
-    Liste de vos assignments
+    {{title}}
 </h2>
+@if(listAssignments.length>0){
 <div class="grid grid-cols-12 gap-6 mt-5">
-    <!-- BEGIN: Users Layout -->
+    <!-- BEGIN: Liste de vos assignments -->
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
         <nav class="w-full sm:w-auto sm:mr-auto">
             <mat-form-field>
@@ -26,29 +27,6 @@
             <mat-slider min="1" max="{{totalDocs}}" step="1" thumbLabel>
                 <input matSliderThumb [(ngModel)]="limit" (change)="getAssignmentsFromService()">
             </mat-slider>
-
-            <!-- <div>
-                <button mat-raised-button color="primary"
-                        [disabled]="!hasPrevPage"
-                        [disabled]="!hasPrevPage"
-                        (click)="premierePage()">Première
-                </button>
-                &nbsp;&nbsp;&nbsp;
-                <button mat-raised-button color="primary"
-                        [disabled]="!hasPrevPage"
-                        (click)="pagePrecedente()">Précédent
-                </button>
-                &nbsp;&nbsp;&nbsp;
-                <button mat-raised-button color="primary"
-                        [disabled]="!hasNextPage"
-                        (click)="pageSuivante()">Suivante
-                </button>
-                &nbsp;&nbsp;&nbsp;
-                <button mat-raised-button color="primary"
-                        [disabled]="!hasNextPage"
-                        (click)="dernierePage()">Dernière
-                </button>
-            </div> -->
         </nav>
         <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="totalPages"
             [pageSize]="limit" [showFirstLastButtons]="true" [pageIndex]="page" aria-label="Select page">
@@ -75,8 +53,29 @@
         </mat-card-actions>
     </mat-card>
     }
-    <!-- BEGIN: Users Layout -->
-    <!-- END: Pagination -->
-
-    <!-- END: Pagination -->
+    <!-- BEGIN:Liste de vos assignments -->
 </div>
+}@else {
+    <div class="grid grid-cols-12 gap-12 mt-5">
+        <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+            <div class="hidden md:block mx-auto text-slate-500"></div>
+            <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+            </div>
+        </div>
+        <!-- BEGIN: Pas encore de Liste des Matières pour l'utilisateur -->
+        <div class="intro-y col-span-12 md:col-span-12 lg:col-span-12  items-center justify-center" >
+            <div class="box">
+                <label class="vide absolute inset-0 flex items-center justify-center">
+                    La liste est encore vide
+                </label>
+                <div class="flex items-start px-5 pt-5">
+                    <div class="w-full flex flex-col lg:flex-row items-center">
+                            <img alt="liste vide" src="assets/dist/images/assignvide.jpg" class="w-full h-auto">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- END: Liste des Matières de l'utilisateur -->
+    </div>
+}
