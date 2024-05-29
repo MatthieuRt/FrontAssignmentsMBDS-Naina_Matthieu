@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { map, startWith } from 'rxjs/operators';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -105,7 +106,12 @@ export class AddAssignmentComponent {
     const body = {etudiants,idMatiere,nom,instruction,dateDeRendu}
     this.assignmentService.addAssignment(body).subscribe(
       (res: any) => {
-        console.log("REUSSI", res);
+        Swal.fire({
+          text: "Assignment ajouté avec succès!",
+          icon: "success",
+          showConfirmButton: false
+        });
+        window.location.reload();
       }
     );
   }

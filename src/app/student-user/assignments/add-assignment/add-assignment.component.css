@@ -4,3 +4,6 @@ select{
 [multiple]{
     all:initial
 }
+[type="text"]:focus{
+    all:initial;
+}
