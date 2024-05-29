@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Matiere } from '../student-user/matiere.model';
 import Swal from 'sweetalert2';
+import { AssignmentsService } from '../shared/assignments.service';
 
 @Component({
   selector: 'app-admin-prof',
@@ -34,7 +35,7 @@ export class AdminProfComponent {
   private _unsubscribeAll: Subject<any> = new Subject<any>();
   private _unsubscribeAssignments: Subject<any> = new Subject<any>();
 
-  constructor(private adminprofService: AdminprofService, private _changeDetectorRef: ChangeDetectorRef) { }
+  constructor(private adminprofService: AdminprofService, private _changeDetectorRef: ChangeDetectorRef,private assignmentService : AssignmentsService) { }
 
   ngOnInit() {
     const userItem = localStorage.getItem("USER");
@@ -124,22 +125,22 @@ export class AdminProfComponent {
   }
 
   async noter() {
-    const assignments = this.listToRender.map((element:any) => element._id);
+    const assignments = this.listToRender.map((element: any) => element._id);
     const { value: formValues } = await Swal.fire({
       title: "Note et remarques",
       html: `
       <div style="display: flex; flex-direction: column;">
-    <label for="swal-input1">Note:</label>
-    <input id="swal-input1" class="swal2-input">
-    <label for="swal-input2">Remarque:</label>
-    <textarea id="swal-input2" class="swal2-input"></textarea>
-</div>
-  `,
+        <label for="swal-input1">Note:</label>
+        <input id="swal-input1" class="swal2-input">
+        <label for="swal-input2">Remarque:</label>
+        <textarea id="swal-input2" class="swal2-input"></textarea>
+      </div>
+      `,
       focusConfirm: false,
       preConfirm: () => {
         const input1 = document.getElementById("swal-input1") as HTMLInputElement;
         const input2 = document.getElementById("swal-input2") as HTMLTextAreaElement;
-        if(input1 && input2){
+        if (input1 && input2) {
           return [
             input1.value,
             input2.value
@@ -152,8 +153,12 @@ export class AdminProfComponent {
       let note = formValues[0];
       let remarques = formValues[1]
 
-      let body = {assignments,note,remarques}
-      Swal.fire(JSON.stringify(body));
+      let body = { assignments, note, remarques }
+      this.assignmentService.noterAssignment(body).subscribe(
+        (res:any)=>{
+          Swal.fire("Assignment(s) noté(s) avec succès !");
+        }
+      )
     }
   }
 }

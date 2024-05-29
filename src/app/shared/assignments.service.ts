@@ -77,7 +77,7 @@ export class AssignmentsService {
 
     // ajoute un assignment et retourne une confirmation
     noterAssignment(assignments: any): Observable<any> {
-      return this.http.patch(`${this.uri}/assignments`, assignments);
+      return this.http.patch(`${this.uri}/assignments/noter`, assignments);
     }
 
   // renvoie un assignment par son id, renvoie undefined si pas trouvé
