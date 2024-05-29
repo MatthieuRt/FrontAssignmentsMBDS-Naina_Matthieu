@@ -11,3 +11,11 @@
 .example-full-width {
     width: 40%;
 }
+
+select{
+    all:initial;
+}
+
+[multiple]{
+    all:initial
+}
