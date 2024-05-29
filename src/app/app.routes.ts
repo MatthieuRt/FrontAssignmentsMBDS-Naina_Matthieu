@@ -15,6 +15,7 @@ import { AssignmentsComponent } from './student-user/assignments/assignments.com
 import { RegisterComponent } from './register/register.component';
 import { adminGuard } from './shared/admin.guard';
 import { MatiereComponent } from './matiere/matiere.component';
+import { AdminProfComponent } from './admin-prof/admin-prof.component';
 
 export const routes: Routes = [
   {
@@ -46,6 +47,9 @@ export const routes: Routes = [
         },
         {
           path: 'matiere', component : MatiereComponent
+        },
+        {
+          path: 'dashboard', component : AdminProfComponent
         }
       ]
   },
