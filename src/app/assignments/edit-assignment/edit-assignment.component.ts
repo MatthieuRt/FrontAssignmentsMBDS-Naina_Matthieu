@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { Assignment } from '../assignment.model';
 import { AssignmentsService } from '../../shared/assignments.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-assignment',
@@ -24,29 +25,27 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './edit-assignment.component.css',
 })
 export class EditAssignmentComponent implements OnInit {
-  assignment: Assignment | undefined;
+  assignment: any | undefined;
   // Pour les champs de formulaire
   nomAssignment = '';
   dateDeRendu?: Date = undefined;
+  description = ''
 
   constructor(
     private assignmentsService: AssignmentsService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
 
   ngOnInit() {
-    // on récupère l'id dans l'url
-    const id = +this.route.snapshot.params['id'];
-    this.assignmentsService.getAssignment(id)
-    .subscribe((assignment) => {
-      this.assignment = assignment;
-      // on met à jour les champs du formulaire
-      if (assignment !== undefined) {
-        this.nomAssignment = assignment.nom;
-        this.dateDeRendu = assignment.dateDeRendu;
-      }
-    });
+    this.assignment = this.data.assignment
+    if(this.assignment){
+      this.nomAssignment = this.assignment.nom;
+      this.dateDeRendu = this.assignment.dateDeRendu;
+      this.description = this.assignment.instruction;
+    }
+    
   }
 
   onSaveAssignment() {

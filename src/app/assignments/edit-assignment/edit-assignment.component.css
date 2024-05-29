@@ -3,3 +3,13 @@
   flex-direction: column;
   margin:5px;
 }
+.min-width {
+  min-width: 500px;
+  max-width: 600px;
+}
+.title{
+  text-align: center;
+  margin-top: 3%;
+  font-weight: bold;
+  font-size: large;
+}

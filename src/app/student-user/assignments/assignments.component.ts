@@ -16,6 +16,7 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { DetailAssignmentModalComponent } from './detail-assignment-modal/detail-assignment-modal.component';
+import { EditAssignmentComponent } from '../../assignments/edit-assignment/edit-assignment.component';
 
 @Component({
   selector: 'app-assignments',
@@ -170,6 +171,14 @@ export class AssignmentsComponent implements OnInit {
     console.log(assign)
     console.log("____________________________")
     this.dialog.open(DetailAssignmentModalComponent, {
+      data: {
+        assignment: assign,
+      },
+    });
+  }
+  openEditDialog(idAssignment: string) {
+    const assign = this.listAssignments.find((assignment: any) => assignment._id == idAssignment);
+    this.dialog.open(EditAssignmentComponent, {
       data: {
         assignment: assign,
       },
