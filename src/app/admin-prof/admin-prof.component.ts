@@ -10,6 +10,7 @@ import { Assignment } from '../assignments/assignment.model';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Matiere } from '../student-user/matiere.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-prof',
@@ -122,7 +123,37 @@ export class AdminProfComponent {
     }
   }
 
-  noter() {
+  async noter() {
+    const assignments = this.listToRender.map((element:any) => element._id);
+    const { value: formValues } = await Swal.fire({
+      title: "Note et remarques",
+      html: `
+      <div style="display: flex; flex-direction: column;">
+    <label for="swal-input1">Note:</label>
+    <input id="swal-input1" class="swal2-input">
+    <label for="swal-input2">Remarque:</label>
+    <textarea id="swal-input2" class="swal2-input"></textarea>
+</div>
+  `,
+      focusConfirm: false,
+      preConfirm: () => {
+        const input1 = document.getElementById("swal-input1") as HTMLInputElement;
+        const input2 = document.getElementById("swal-input2") as HTMLTextAreaElement;
+        if(input1 && input2){
+          return [
+            input1.value,
+            input2.value
+          ];
+        }
+        return;
+      }
+    });
+    if (formValues) {
+      let note = formValues[0];
+      let remarques = formValues[1]
 
+      let body = {assignments,note,remarques}
+      Swal.fire(JSON.stringify(body));
+    }
   }
 }
