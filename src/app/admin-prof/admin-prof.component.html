@@ -149,111 +149,82 @@
                 </div>
                 <!-- END: Détails du devoir -->
                 <!-- BEGIN: Daily Sales -->
-                <div class="intro-y box col-span-12 lg:col-span-6">
-                    <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
-                        <h2 class="font-medium text-base mr-auto">
-                            Daily Sales
-                        </h2>
-                        <div class="dropdown ml-auto sm:hidden">
-                            <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i> </a>
-                            <div class="dropdown-menu w-40">
-                                <ul class="dropdown-content">
-                                    <li>
-                                        <a href="javascript:;" class="dropdown-item"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Download Excel </a>
-                                    </li>
-                                </ul>
-                            </div>
+                @if(listeAssignments && listeAssignments.length>0){
+                    <div class="intro-y box col-span-12 lg:col-span-6">
+                        <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+                            <h2 class="font-medium text-base mr-auto">
+                                Devoirs non notés
+                            </h2>
                         </div>
-                        <button class="btn btn-outline-secondary hidden sm:flex"> <i data-lucide="file" class="w-4 h-4 mr-2"></i> Download Excel </button>
-                    </div>
-                    <div class="p-5">
-                        <div class="relative flex items-center">
-                            <div class="w-12 h-12 flex-none image-fit">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full" src="dist/images/profile-11.jpg">
+                        <div class="p-5" #activeList="cdkDropList" cdkDropList cdkDropListOrientation="vertical"
+                            [cdkDropListData]="listeAssignmentsNonNotes" [cdkDropListConnectedTo]="[inactiveList]"
+                            (cdkDropListDropped)="drop($event)">
+                            @for(devoir of listeAssignmentsNonNotes;track devoir.id) {
+                            <div class="relative flex items-center" cdkDrag>
+                                <div class="w-12 h-12 flex-none image-fit">
+                                    <img alt="Midone - HTML Admin Template" class="rounded-full"
+                                    src="assets/dist/images/{{ listeMatieres[0].prof_img }}">
+                                </div>
+                                <div class="ml-4 mr-auto">
+                                    <label class="font-medium">{{devoir.nom}}</label>
+                                </div>
                             </div>
-                            <div class="ml-4 mr-auto">
-                                <a href="" class="font-medium"></a> 
-                                <div class="text-slate-500 mr-5 sm:mr-5">Bootstrap 4 HTML Admin Template</div>
-                            </div>
-                            <div class="font-medium text-slate-600 dark:text-slate-500">+$19</div>
-                        </div>
-                        <div class="relative flex items-center mt-5">
-                            <div class="w-12 h-12 flex-none image-fit">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full" src="dist/images/profile-8.jpg">
-                            </div>
-                            <div class="ml-4 mr-auto">
-                                <a href="" class="font-medium">Russell Crowe</a> 
-                                <div class="text-slate-500 mr-5 sm:mr-5">Tailwind HTML Admin Template</div>
-                            </div>
-                            <div class="font-medium text-slate-600 dark:text-slate-500">+$25</div>
-                        </div>
-                        <div class="relative flex items-center mt-5">
-                            <div class="w-12 h-12 flex-none image-fit">
-                                <img alt="Midone - HTML Admin Template" class="rounded-full" src="dist/images/profile-12.jpg">
-                            </div>
-                            <div class="ml-4 mr-auto">
-                                <a href="" class="font-medium">Al Pacino</a> 
-                                <div class="text-slate-500 mr-5 sm:mr-5">Vuejs HTML Admin Template</div>
-                            </div>
-                            <div class="font-medium text-slate-600 dark:text-slate-500">+$21</div>
+                            }
                         </div>
                     </div>
-                </div>
+                
+                    <div class="intro-y box col-span-12 lg:col-span-6">
+                        <div class="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
+                            <h2 class="font-medium text-base mr-auto">
+                                Noter un ou plusieurs devoirs
+                            </h2>
+                            <div class="dropdown ml-auto sm:hidden">
+                                <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false"
+                                    data-tw-toggle="dropdown"> <i data-lucide="more-horizontal"
+                                        class="w-5 h-5 text-slate-500"></i> </a>
+                            </div>
+                            @if (listToRender.length>0) {
+                               <button class="btn hidden sm:flex text-center" (click)="noter()"
+                               style="background-color: #90EE90;"> <i
+                                    data-lucide="file" class="w-4 h-4 mr-2"></i> Noter </button> 
+                            }
+                        </div>
+                        <div class="p-5" #inactiveList="cdkDropList" cdkDropList cdkDropListOrientation="horizontal"
+                            [cdkDropListData]="listToRender" [cdkDropListConnectedTo]="[activeList]"
+                            (cdkDropListDropped)="drop($event)">
+                            <div class="tab-content">
+                                <div id="latest-tasks-new" class="tab-pane active" role="tabpanel"
+                                    aria-labelledby="latest-tasks-new-tab">
+                                    @if(listToRender.length>0){
+                                    @for(torender of listToRender;track torender.id){
+                                    <div class="flex items-center">
+                                        <div class="border-l-2 border-primary dark:border-primary pl-4" cdkDrag
+                                            style="border-color:#ff000c">
+                                            <div class="ml-4 mr-auto">
+                                                <label class="font-medium">{{torender.nom}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-check form-switch ml-auto">
+                                            <button mat-icon-button color="danger" aria-label="Enlevé le devoir"
+                                                (click)="enleverAssignmentToRender(torender)">
+                                                <mat-icon style="color: #ff000c;">delete</mat-icon>
+                                            </button>
+                                        </div>
+        
+                                    </div>
+                                    }
+                                    }@else {
+                                    <p>Déplacez ici les devoirs</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
                 <!-- END: Daily Sales -->
                 <!-- BEGIN: Latest Tasks -->
-                <div class="intro-y box col-span-12 lg:col-span-6">
-                    <div class="flex items-center px-5 py-5 sm:py-0 border-b border-slate-200/60 dark:border-darkmode-400">
-                        <h2 class="font-medium text-base mr-auto">
-                            Latest Tasks
-                        </h2>
-                        <div class="dropdown ml-auto sm:hidden">
-                            <a class="dropdown-toggle w-5 h-5 block" href="javascript:;" aria-expanded="false" data-tw-toggle="dropdown"> <i data-lucide="more-horizontal" class="w-5 h-5 text-slate-500"></i> </a>
-                            <div class="nav nav-tabs dropdown-menu w-40" role="tablist">
-                                <ul class="dropdown-content">
-                                    <li> <a id="latest-tasks-mobile-new-tab" href="javascript:;" data-tw-toggle="tab" data-tw-target="#latest-tasks-new" class="dropdown-item" role="tab" aria-controls="latest-tasks-new" aria-selected="true">New</a> </li>
-                                    <li> <a id="latest-tasks-mobile-last-week-tab" href="javascript:;" data-tw-toggle="tab" data-tw-target="#latest-tasks-last-week" class="dropdown-item" role="tab" aria-selected="false">Last Week</a> </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <ul class="nav nav-link-tabs w-auto ml-auto hidden sm:flex" role="tablist" >
-                            <li id="latest-tasks-new-tab" class="nav-item" role="presentation"> <a href="javascript:;" class="nav-link py-5 active" data-tw-target="#latest-tasks-new" aria-controls="latest-tasks-new" aria-selected="true" role="tab" > New </a> </li>
-                            <li id="latest-tasks-last-week-tab" class="nav-item" role="presentation"> <a href="javascript:;" class="nav-link py-5" data-tw-target="#latest-tasks-last-week" aria-selected="false" role="tab" > Last Week </a> </li>
-                        </ul>
-                    </div>
-                    <div class="p-5">
-                        <div class="tab-content">
-                            <div id="latest-tasks-new" class="tab-pane active" role="tabpanel" aria-labelledby="latest-tasks-new-tab">
-                                <div class="flex items-center">
-                                    <div class="border-l-2 border-primary dark:border-primary pl-4">
-                                        <a href="" class="font-medium">Create New Campaign</a> 
-                                        <div class="text-slate-500">10:00 AM</div>
-                                    </div>
-                                    <div class="form-check form-switch ml-auto">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </div>
-                                <div class="flex items-center mt-5">
-                                    <div class="border-l-2 border-primary dark:border-primary pl-4">
-                                        <a href="" class="font-medium">Meeting With Client</a> 
-                                        <div class="text-slate-500">02:00 PM</div>
-                                    </div>
-                                    <div class="form-check form-switch ml-auto">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </div>
-                                <div class="flex items-center mt-5">
-                                    <div class="border-l-2 border-primary dark:border-primary pl-4">
-                                        <a href="" class="font-medium">Create New Repository</a> 
-                                        <div class="text-slate-500">04:00 PM</div>
-                                    </div>
-                                    <div class="form-check form-switch ml-auto">
-                                        <input class="form-check-input" type="checkbox">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 <!-- END: Latest Tasks -->
             </div>
         </div>
