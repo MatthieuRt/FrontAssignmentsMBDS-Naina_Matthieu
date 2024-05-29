@@ -121,8 +121,8 @@ export class AssignmentsService {
     // plus tard on verra comment faire avec une base de données
     // il faudra faire une requête HTTP pour envoyer l'objet modifié
     this.logService.log(assignment.nom, "modifié");
-    //return of("Assignment modifié avec succès");
-    return this.http.put<Assignment>(this.uri, assignment);
+    const uri =`${this.uri}/assignments`;
+    return this.http.put<Assignment>(uri, assignment);
   }
 
   deleteAssignment(assignment: Assignment): Observable<any> {

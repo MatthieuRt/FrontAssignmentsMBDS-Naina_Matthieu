@@ -8,7 +8,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { Assignment } from '../assignment.model';
 import { AssignmentsService } from '../../shared/assignments.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-assignment',
@@ -30,16 +30,18 @@ export class EditAssignmentComponent implements OnInit {
   nomAssignment = '';
   dateDeRendu?: Date = undefined;
   description = ''
-
+  user :any;
   constructor(
     private assignmentsService: AssignmentsService,
     private router: Router,
     private route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<EditAssignmentComponent>
   ) {}
 
   ngOnInit() {
     this.assignment = this.data.assignment
+    this.user = this.data.user
     if(this.assignment){
       this.nomAssignment = this.assignment.nom;
       this.dateDeRendu = this.assignment.dateDeRendu;
@@ -50,18 +52,20 @@ export class EditAssignmentComponent implements OnInit {
 
   onSaveAssignment() {
     if (!this.assignment) return;
-    if (this.nomAssignment == '' || this.dateDeRendu === undefined) return;
-
+    if (this.nomAssignment == '' || this.description == ''|| this.dateDeRendu === undefined) return;
+    console.log(this.nomAssignment+"=>(ancien) : "+this.assignment.nom)
+    console.log(this.dateDeRendu+"=>(ancien) : "+this.assignment.dateDeRendu)
+    console.log(this.description+"=>(ancien) : "+this.assignment.instruction)
     // on récupère les valeurs dans le formulaire
     this.assignment.nom = this.nomAssignment;
     this.assignment.dateDeRendu = this.dateDeRendu;
+    this.assignment.instruction = this.description;
     this.assignmentsService
       .updateAssignment(this.assignment)
       .subscribe((message) => {
         console.log(message);
-
-        // navigation vers la home page
-        this.router.navigate(['/home']);
+        //if(this.user.role=='admin'){this.router.navigate(['/student/assignment']);}
+        this.dialogRef.close();
       });
   }
 }
