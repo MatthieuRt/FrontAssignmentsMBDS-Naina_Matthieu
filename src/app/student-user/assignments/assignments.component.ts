@@ -68,7 +68,7 @@ export class AssignmentsComponent implements OnInit {
 
   }
   getAssignmentsFromService() {
-    if (this.user.role == "prof") {
+    if (this.user.role == "admin") {
       this.userServ.getAllAssignments(this.page, this.limit)
         .subscribe((response: any) => {
           console.log(response)
@@ -144,6 +144,7 @@ export class AssignmentsComponent implements OnInit {
   }
 
   handleFilterChange(value: string | null): void {
+    this.listAssignments = this.resetList
     switch (value) {
       case "note":
         this.listAssignments = this.listAssignments.filter((assignment: any) => assignment.remarques != null)
