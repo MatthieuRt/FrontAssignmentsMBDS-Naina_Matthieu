@@ -50,18 +50,28 @@ export class AssignmentsComponent implements OnInit {
   hasPrevPage !: boolean;
   listAssignments: any;
   filtreControl = new FormControl('');
-  resetList :any;
-  constructor(private userServ: UtilisateurService,private _changeDetectorRef: ChangeDetectorRef,public dialog: MatDialog) { }
+  resetList: any;
+  user :any;
+  constructor(private userServ: UtilisateurService, private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog) { }
   ngOnInit() {
-    this.getAssignmentsFromService();
-    this.filtreControl.valueChanges.subscribe(value => {
-      if (value != null) {
-        this.handleFilterChange(value);
+    const userstring: string | null = localStorage.getItem("USER");
+    if (userstring) {
+      this.user = JSON.parse(userstring);
+      if(this.user.role=="prof"){
+        this.getAllAssignmentsFromService();
+      }else{
+        this.getAssignmentsFromService();
       }
-    });
+      this.filtreControl.valueChanges.subscribe(value => {
+        if (value != null) {
+          this.handleFilterChange(value);
+        }
+      });
+    }
+   
   }
   getAssignmentsFromService() {
-    this.userServ.getAssignmentByIdStudent(this.page, this.limit)
+    this.userServ.getAssignmentByIdStudent(this.user._id,this.page, this.limit)
       .subscribe((response: any) => {
         // console.log(response)
         this.listAssignments = response.docs;
@@ -93,6 +103,21 @@ export class AssignmentsComponent implements OnInit {
         // console.log('Has previous page:', this.hasPrevPage);
       })
 
+  }
+  getAllAssignmentsFromService() {
+    this.userServ.getAllAssignments(this.page, this.limit)
+      .subscribe((response: any) => {
+        console.log(response)
+        this.listAssignments = response.docs;
+        this.resetList = this.listAssignments;
+        this.totalDocs = response.totalDocs;
+        this.totalPages = response.totalPages;
+        this.nextPage = response.nextPage;
+        this.prevPage = response.prevPage;
+        this.hasNextPage = response.hasNextPage;
+        this.hasPrevPage = response.hasPrevPage;
+        console.log('List All of assignments:', this.listAssignments);
+      })
   }
   pagePrecedente() {
     this.page = this.prevPage;
@@ -136,11 +161,11 @@ export class AssignmentsComponent implements OnInit {
         break
     }
   }
-  reset(){
+  reset() {
     this.listAssignments = this.resetList
     this._changeDetectorRef.detectChanges();
   }
-  openDialog(idAssignment:string) {
+  openDialog(idAssignment: string) {
     const assign = this.listAssignments.find((assignment: any) => assignment._id == idAssignment);
     console.log(assign)
     console.log("____________________________")

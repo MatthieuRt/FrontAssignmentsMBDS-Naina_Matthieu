@@ -101,8 +101,8 @@ export class UtilisateurService {
       })
     );
   }
-  getAssignmentByIdStudent(page: number, limit: number): Observable<any> {
-    let idEtudiant = "663a52b9946fa30b7711db7d";
+  getAssignmentByIdStudent(idEtudiant:string,page: number, limit: number): Observable<any> {
+    //let idEtudiant = "663a52b9946fa30b7711db7d";
     const matiereList: any = [];
     const matiereSet = new Set<string>(); // Utilisation d'un ensemble pour suivre les matières demandées
     let count = 0;
@@ -170,6 +170,59 @@ export class UtilisateurService {
       listAssignment : assignments
     }
     return this.http.post<any>(url,data);
+  }
+  getAllAssignments(page: number, limit: number): Observable<any>{
+    const matiereList: any = [];
+    const matiereSet = new Set<string>(); // Utilisation d'un ensemble pour suivre les matières demandées
+    let count = 0;
+    const url = `${this.uri}assignments?page=${page}&limit=${limit}`;
+    return this.http.get<any>(url).pipe(
+      mergeMap((response: any) => {
+        const listAssignment = response.docs;
+        const reponse = response;
+  
+        const assignmentPromises = listAssignment.map(async (assignment: any) => {
+          let matiereIN = matiereList.find((mat: any) => mat._id === assignment.idMatiere);
+  
+          if (!matiereIN && !matiereSet.has(assignment.idMatiere)) {
+            count += 1;
+            console.log("Appel à getMatiereById : " + count);
+            matiereSet.add(assignment.idMatiere); // Ajout de l'ID de la matière à l'ensemble
+  
+            const matiereResponse :any= await this.getMatiereById(assignment.idMatiere).toPromise();
+  
+            // On s'assure qu'il n'y a pas de doublons après avoir récupéré la réponse
+            if (!matiereList.some((mat: any) => mat._id === matiereResponse._id)) {
+              matiereList.push(matiereResponse);
+              console.log("Ajouté à matiereList :", matiereResponse);
+            } else {
+              console.log("Doublon détecté et évité :", matiereResponse);
+            }
+  
+            assignment.matiere = matiereResponse.Matiere;
+            assignment.matiere_img = matiereResponse.image;
+            assignment.prof_img = matiereResponse.prof_img;
+            assignment.prof_id = matiereResponse.professeur_id;
+          } else if (matiereIN) {
+            assignment.matiere = matiereIN.Matiere;
+            assignment.matiere_img = matiereIN.image;
+            assignment.prof_img = matiereIN.prof_img;
+            assignment.prof_id = matiereIN.professeur_id;
+          }
+  
+          return assignment;
+        });
+  
+        // Utilisation de Promise.all pour attendre toutes les promesses des assignments
+        return from(Promise.all(assignmentPromises)).pipe(
+          map((updatedAssignments) => {
+            reponse.docs = updatedAssignments;
+            console.log("Final matiereList :", matiereList); // Vérification qu'on ait pas de doublons de matiere List c'est à dire qu'on a seulement appeler getMatiereById si la matière n'est pas encore presente
+            return reponse;
+          })
+        );
+      })
+    );
   }
   private handleError<T>(operation: any, result?: T) {
     return (error: any): Observable<T> => {
