@@ -17,6 +17,7 @@ export class StudentUserComponent implements OnInit {
   MatieresFiltree: Matiere[] = [];
   page = 1;
   limit = 10;
+  user: any;
   totalDocs !: number;
   totalPages !: number;
   nextPage !: number;
@@ -30,16 +31,21 @@ export class StudentUserComponent implements OnInit {
     this.getMatiereByUserIdFromService();
   }
   getMatiereByUserIdFromService() {
-    this.userServ.getMatieresByIduser('663a52b9946fa30b7711db7d').subscribe(
-      (data) => {
-        this.listMatiere = data;
-        this.MatieresFiltree = this.listMatiere
-        console.log(this.listMatiere)
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    const userstring: string | null = localStorage.getItem("USER");
+    if (userstring) {
+      this.user = JSON.parse(userstring);
+      // this.userServ.getMatieresByIduser('663a52b9946fa30b7711db7d').subscribe(
+      this.userServ.getMatieresByIduser(this.user._id).subscribe(
+        (data) => {
+          this.listMatiere = data;
+          this.MatieresFiltree = this.listMatiere
+          console.log(this.listMatiere)
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
   }
 
   versMatiereDetail(id: string) {
@@ -50,7 +56,7 @@ export class StudentUserComponent implements OnInit {
       this.MatieresFiltree = this.listMatiere.filter(matiere =>
         matiere.Matiere.toLowerCase().includes(this.searchTerm.toLowerCase())
       );
-    }else{
+    } else {
       this.MatieresFiltree = this.listMatiere
     }
 

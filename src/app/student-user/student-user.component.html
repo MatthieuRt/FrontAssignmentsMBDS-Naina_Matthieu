@@ -1,40 +1,63 @@
 <h2 class="intro-y text-lg font-medium mt-10">
-    Users Layout
+    Liste des Matières
 </h2>
-<div class="grid grid-cols-12 gap-6 mt-5">
-    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-        <div class="hidden md:block mx-auto text-slate-500"></div>
-        <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-            <div class="w-56 relative text-slate-500">
-                <input [(ngModel)]="searchTerm" (ngModelChange)="filterMatieres()" type="text" class="form-control w-56 box pr-10" placeholder="Recherché...">                <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i> 
-            </div>
-        </div>
-    </div>
-    <!-- BEGIN: Users Layout -->
-    @for( mat of MatieresFiltree; track mat._id) {
-    <div class="intro-y col-span-12 md:col-span-6 lg:col-span-4">
-        <div class="box">
-            <div class="flex items-start px-5 pt-5">
-                <div class="w-full flex flex-col lg:flex-row items-center">
-                    <div class="w-16 h-16 image-fit">
-                        <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/{{ mat.image }}">
-                    </div>
-                    <div class="lg:ml-4 text-center lg:text-left mt-3 lg:mt-0">
-                        <a href="" class="font-medium">{{mat.Matiere}}</a> 
-                        <div class="text-slate-500 text-xs mt-0.5">{{mat.prof_name}}</div>
-                    </div>
+@if(MatieresFiltree.length>0){
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+            <div class="hidden md:block mx-auto text-slate-500"></div>
+            <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+                <div class="w-56 relative text-slate-500">
+                    <input [(ngModel)]="searchTerm" (ngModelChange)="filterMatieres()" type="text" class="form-control w-56 box pr-10" placeholder="Recherché...">                <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-lucide="search"></i> 
                 </div>
             </div>
-            <div class="text-center lg:text-left p-5">
-                <div></div>
-                <div class="flex items-center justify-center lg:justify-start text-slate-500 mt-5"  style="min-height:61px"> <i data-lucide="mail" class="w-3 h-3 mr-2"></i> Découvrez les secrets de {{mat.Matiere}}, magistralement enseignés par l'incomparable {{mat.prof_name}}.</div>
-                <div class="flex items-center justify-center lg:justify-start text-slate-500 mt-1"> <i data-lucide="instagram" class="w-3 h-3 mr-2"></i>Contact :<strong> {{mat.prof_mail}}</strong> </div>
-            </div>
-            <div class="text-center lg:text-right p-5 border-t border-slate-200/60 dark:border-darkmode-400">
-                <button class="btn btn-primary py-1 px-2 mr-2" (click) ="versMatiereDetail(mat._id)">Voir les details</button>
+        </div>
+        <!-- BEGIN: Liste des Matières de l'utilisateur -->
+        @for( mat of MatieresFiltree; track mat._id) {
+        <div class="intro-y col-span-12 md:col-span-6 lg:col-span-4">
+            <div class="box">
+                <div class="flex items-start px-5 pt-5">
+                    <div class="w-full flex flex-col lg:flex-row items-center">
+                        <div class="w-16 h-16 image-fit">
+                            <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/{{ mat.image }}">
+                        </div>
+                        <div class="lg:ml-4 text-center lg:text-left mt-3 lg:mt-0">
+                            <a href="" class="font-medium">{{mat.Matiere}}</a> 
+                            <div class="text-slate-500 text-xs mt-0.5">{{mat.prof_name}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center lg:text-left p-5">
+                    <div></div>
+                    <div class="flex items-center justify-center lg:justify-start text-slate-500 mt-5"  style="min-height:61px"> <i data-lucide="mail" class="w-3 h-3 mr-2"></i> Découvrez les secrets de {{mat.Matiere}}, magistralement enseignés par l'incomparable {{mat.prof_name}}.</div>
+                    <div class="flex items-center justify-center lg:justify-start text-slate-500 mt-1"> <i data-lucide="instagram" class="w-3 h-3 mr-2"></i>Contact :<strong> {{mat.prof_mail}}</strong> </div>
+                </div>
+                <div class="text-center lg:text-right p-5 border-t border-slate-200/60 dark:border-darkmode-400">
+                    <button class="btn btn-primary py-1 px-2 mr-2" (click) ="versMatiereDetail(mat._id)">Voir les details</button>
+                </div>
             </div>
         </div>
+        }
+        <!-- END: Liste des Matières de l'utilisateur -->
     </div>
-    }
-    <!-- END: Users Layout -->
-</div>
+}@else {
+    <div class="grid grid-cols-12 gap-12 mt-5">
+        <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+            <div class="hidden md:block mx-auto text-slate-500"></div>
+            <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+            </div>
+        </div>
+        <!-- BEGIN: Pas encore de Liste des Matières pour l'utilisateur -->
+        <div class="intro-y col-span-12 md:col-span-12 lg:col-span-12  items-center justify-center" >
+            <div class="box">
+                <div class="flex items-start px-5 pt-5">
+                    <div class="w-full flex flex-col lg:flex-row items-center">
+                            <img alt="Image de la matière" src="assets/dist/images/vide.jpg">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <!-- END: Liste des Matières de l'utilisateur -->
+    </div>
+}
+
