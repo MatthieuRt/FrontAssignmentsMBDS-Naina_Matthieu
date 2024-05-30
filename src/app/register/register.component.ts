@@ -49,7 +49,16 @@ export class RegisterComponent {
 
     this.authService.register(this.name,this.email,this.password,this.role).subscribe(
       (response)=>{
-        this.router.navigate(['/'])
+        let userConnected = localStorage.getItem("USER")
+          if(userConnected){   
+            if(JSON.parse(userConnected).role=='eleve'){
+              this.router.navigate(['/student'])
+            }else if(JSON.parse(userConnected).role=='prof'){
+              this.router.navigate(['/dashboard'])
+            }else{
+              this.router.navigate(['/'])
+            }
+          }
       },(error)=>{
         alert('Une erreur est survenue, veuillez réessayer')
       }
