@@ -8,7 +8,8 @@ import { Matiere } from '../student-user/matiere.model';
 })
 export class AdminprofService {
 
-  uri = "http://localhost:8010/api/";
+  //uri = "http://localhost:8010/api/";
+  uri = "https://backassignmentsmdbs-naina-matthieu.onrender.com/api/"
   
   private _listMatieres: BehaviorSubject<Matiere[] | null> = new BehaviorSubject<Matiere[] | null>(null);
   private _listAssignments: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);

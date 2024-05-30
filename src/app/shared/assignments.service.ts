@@ -18,7 +18,8 @@ export class AssignmentsService {
   constructor(private logService: LoggingService,
     private http: HttpClient) { }
 
-  uri = 'http://localhost:8010/api';
+  //uri = 'http://localhost:8010/api';
+  uri = "https://backassignmentsmdbs-naina-matthieu.onrender.com/api"
   //uri = "https://angularmbdsmadagascar2024.onrender.com/api/assignments";
 
   private _matieres: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);

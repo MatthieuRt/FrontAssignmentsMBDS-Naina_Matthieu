@@ -8,7 +8,8 @@ import { Assignment } from '../student-user/assignment.model';
   providedIn: 'root'
 })
 export class UtilisateurService {
-  uri = "http://localhost:8010/api/";
+  //uri = "http://localhost:8010/api/";
+  uri = "https://backassignmentsmdbs-naina-matthieu.onrender.com/api/"
   private _user: BehaviorSubject<any | null> = new BehaviorSubject(null);
   private _listMatieres: BehaviorSubject<Matiere[] | null> = new BehaviorSubject<Matiere[] | null>(null);
   private _matiere: BehaviorSubject<Matiere | null> = new BehaviorSubject<Matiere | null>(null);

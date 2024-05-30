@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 })
 export class MatiereService {
 
-  uri = "http://localhost:8010/api/";
+  //uri = "http://localhost:8010/api/";
+  uri = "https://backassignmentsmdbs-naina-matthieu.onrender.com/api/"
 
   constructor(private http: HttpClient) { }
 

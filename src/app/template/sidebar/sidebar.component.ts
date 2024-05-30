@@ -13,11 +13,13 @@ export class SidebarComponent {
   assigmentRouteLabel:string='Tous les assignments ';
   isProf : boolean = false;
   isAdmin : boolean = false;
+  isEtudiant : boolean = false;
   constructor(){
     const userstring: string | null = localStorage.getItem("USER");
     if (userstring) {
       this.user = JSON.parse(userstring);
       if(this.user.role=='eleve'){
+        this.isEtudiant = true;
         this.assigmentRouteLabel = 'Vos assignments'
       }
       if(this.user.role=='prof'){

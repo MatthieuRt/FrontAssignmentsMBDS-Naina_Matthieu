@@ -6,8 +6,8 @@ import { Observable, catchError, map, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  uri = "http://localhost:8010/api/users";
-
+  //uri = "http://localhost:8010/api/users";
+  uri = "https://backassignmentsmdbs-naina-matthieu.onrender.com/api/users"
   // propriété pour savoir si l'utilisateur est connecté
   loggedIn = false;
   admin = false;
