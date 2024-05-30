@@ -181,6 +181,7 @@ export class AssignmentsComponent implements OnInit {
     this.dialog.open(EditAssignmentComponent, {
       data: {
         assignment: assign,
+        user : this.user
       },
     });
   }
