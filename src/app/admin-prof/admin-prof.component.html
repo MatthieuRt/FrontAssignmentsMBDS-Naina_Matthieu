@@ -47,7 +47,7 @@
                             Liste des devoirs
                         </h2>
                     </div>
-                    <div class="p-5">
+                    <div class="p-5"  style="max-height: 400px; overflow-x: auto;">
                         @if(listeAssignments && listeAssignments.length>0){
                         @for(devoir of listeAssignments;track devoir.id) {
                         <div class="flex flex-col sm:flex-row">
@@ -154,7 +154,7 @@
                 <!-- END: Détails du devoir -->
                 <!-- BEGIN: Daily Sales -->
                 @if(listeAssignments && listeAssignments.length>0){
-                    <div class="intro-y box col-span-12 lg:col-span-6">
+                    <div class="intro-y box col-span-12 lg:col-span-6" style="max-height: 400px; overflow-x: auto;">
                         <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                             <h2 class="font-medium text-base mr-auto">
                                 Devoirs non notés

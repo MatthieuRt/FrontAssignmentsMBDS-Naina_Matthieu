@@ -5,14 +5,14 @@
             <a href="javascript:;" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                 <div class="side-menu__title" [routerLink]="['/dashboard']">
-                    Dashboard 
+                    Dashboard
                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
             <a href="javascript:;" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                 <div class="side-menu__title" [routerLink]="['/matiere']">
-                    Créer une matière 
+                    Créer une matière
                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
@@ -21,10 +21,10 @@
             <a href="javascript:;" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                 <div class="side-menu__title" [routerLink]="['/student']">
-                    Matières 
+                    Matières
                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                 </div>
-            </a>    
+            </a>
             }
             @if(isProf || isAdmin){
             <a href="javascript:;" class="side-menu">
@@ -42,13 +42,16 @@
                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a> -->
+            @if(isAdmin || isEtudiant){
             <a href="javascript:;" class="side-menu">
                 <div class="side-menu__icon"> <i data-lucide="home"></i> </div>
                 <div class="side-menu__title" [routerLink]="['/student/assignment']">
-                    {{assigmentRouteLabel}} 
+                    {{assigmentRouteLabel}}
                     <div class="side-menu__sub-icon "> <i data-lucide="chevron-down"></i> </div>
                 </div>
             </a>
-        </li>        
+            }
+
+        </li>
     </ul>
 </nav>
