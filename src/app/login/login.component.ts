@@ -43,7 +43,7 @@ export class LoginComponent {
             }else if(JSON.parse(userConnected).role=='prof'){
               this.router.navigate(['/dashboard'])
             }else{
-              this.router.navigate(['/'])
+              this.router.navigate(['/student/assignment'])
             }
           }
         }

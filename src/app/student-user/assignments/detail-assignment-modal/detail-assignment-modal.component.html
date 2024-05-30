@@ -1,6 +1,11 @@
 <div class="flex items-start min-width">
     <div class="w-20 h-20 image-fit" style="margin-left: 12%;">
-        <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/{{ data.assignment.matiere_img }}">
+        @if(data.assignment.matiere_img!=""){
+            <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/{{ data.assignment.matiere_img }}">
+
+        }@else {
+            <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/default-matiere.png">
+        }
     </div>
     <div class="lg:ml-4 text-center lg:text-left mt-3 lg:mt-0 surround-title">
         <div class="title">
@@ -22,8 +27,13 @@
             <strong>Professeur responsable : </strong>
             <div class="flex items-center ml-5">
                 <div class="w-10 h-10 image-fit">
-                    <img alt="Image de la matière" class="rounded-full"
-                        src="assets/dist/images/{{ data.assignment.matiere_img }}">
+                    @if( data.assignment.prof_img!=""){
+                        <img alt="Image de la matière" class="rounded-full"
+                        src="assets/dist/images/{{ data.assignment.prof_img }}">
+                    }@else {
+                        <img alt="Image de la matière" class="rounded-full" src="assets/dist/images/default.png">
+                    }
+                 
                 </div>
                 <div class="ml-3">
                     <div class="w-24 sm:w-40 truncate sm:whitespace-normal font-medium text-lg">{{professeur?.nom}}

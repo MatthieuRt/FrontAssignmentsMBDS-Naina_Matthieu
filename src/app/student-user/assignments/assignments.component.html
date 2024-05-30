@@ -46,7 +46,7 @@
         </mat-card-content>
         <mat-card-actions class="flex">
             <button class="btn btn-outline-secondary py-1 px-2" (click)="openDialog(assignment._id)">Voir détails</button>
-            @if(user && user.role=="prof"){
+            @if(user && user.role=="admin"){
             <button class="btn btn-outline-secondary py-1 px-2" style="background-color: #90EE90;margin-left: 22px;width: 90px;"
              (click)="openEditDialog(assignment._id)">Modifier</button>
             }
