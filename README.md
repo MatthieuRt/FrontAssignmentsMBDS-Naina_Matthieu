@@ -1,6 +1,5 @@
 # FrontAssignmentsMBDS-Naina_Matthieu 
 Projet réalisé en binôme : `3 - ANDRIAMPARANY Naina` et `47 - RATSARATOETRA Matthieu Nomen'Ny Avo`    
-Lien du site hebergé sur render.com : https://frontassignmentsmbds-naina-matthieu.onrender.com/login  
 
 # Présentation du projet :
 Le projet que nous avons fait est une amélioration du projet déjà commencé par le professeur Michel Buffa.  
